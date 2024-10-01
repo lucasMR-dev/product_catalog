@@ -1,0 +1,48 @@
+{
+    "name": "product_catalog_crud",
+    "description": "Laravel CRUD App with Inertia-React + MySQL",
+    "version": "1.0.0",
+    "main": "app.jsx",
+    "directories": {
+        "test": "tests"
+    },
+    "keywords": [
+        "inertia",
+        "laravel11",
+        "mysql",
+        "react"
+    ],
+    "author": "Lucas Mardones Rivera <l.mardones91@gmail.com>",
+    "license": "ISC",
+    "private": true,
+    "type": "module",
+    "scripts": {
+        "dev": "vite",
+        "build": "vite build"
+    },
+    "devDependencies": {
+        "@headlessui/react": "^2.0.0",
+        "@inertiajs/react": "^1.0.0",
+        "@tailwindcss/forms": "^0.5.3",
+        "@vitejs/plugin-react": "^4.2.0",
+        "autoprefixer": "^10.4.12",
+        "axios": "^1.7.4",
+        "flowbite": "^2.5.2",
+        "flowbite-typography": "^1.0.4",
+        "laravel-vite-plugin": "^1.0",
+        "postcss": "^8.4.31",
+        "react": "^18.2.0",
+        "react-dom": "^18.2.0",
+        "tailwindcss": "^3.2.1",
+        "vite": "^5.0"
+    },
+    "dependencies": {
+        "@heroicons/react": "^2.1.5",
+        "apexcharts": "^3.54.0",
+        "quill": "^2.0.2",
+        "react-number-format": "^5.4.2",
+        "react-photo-view": "^1.2.6",
+        "react-quilljs": "^2.0.4",
+        "react-select": "^5.8.1"
+    }
+}
