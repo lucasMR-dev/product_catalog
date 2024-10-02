@@ -3,31 +3,18 @@ import { Link } from "@inertiajs/react";
 
 export default function AlertDiv({ options, path }) {
 
-    let divStyle = `flex items-center p-4 mb-4 text-green-800 rounded-lg bg-green-50 dark:bg-green-800 dark:text-green-400`;
+    let divStyle = `flex items-center p-4 mb-4 text-green-500 dark:text-green-400`;
     if (options !== null) {
         if (options.action === 'delete') {
-            divStyle = "flex items-center p-4 mb-4 text-red-800 rounded-lg bg-red-50 dark:bg-red-800 dark:text-red-400";
+            divStyle = "flex items-center p-4 mb-4 text-red-500 dark:text-red-400 ";
         } else if (options.action === 'update') {
-            divStyle = "flex items-center p-4 mb-4 text-blue-800 rounded-lg bg-blue-50 dark:bg-blue-800 dark:text-blue-400";
+            divStyle = "flex items-center p-4 mb-4 text-blue-500 dark:text-blue-400";
         }
     }
 
     return (
         <div className="grid grid-cols-3 gap-4">
             <div className="col-span-2">
-                {
-                    options && (
-                        <div id="successAlert" className={divStyle} role="alert">
-                            <InformationCircleIcon className="size-5 dark:text-white" />
-                            <span className="sr-only">Info</span>
-                            <div className="ms-3 text-sm font-medium dark:text-white">
-                                {options.message}
-                            </div>
-                        </div>
-                    )
-                }
-            </div>
-            <div className="grid justify-items-end items-center">
                 <Link
                     href={path}
                 >
@@ -39,6 +26,20 @@ export default function AlertDiv({ options, path }) {
                     </button>
                 </Link>
             </div>
+            <div className="grid justify-items-end items-center">
+                {
+                    options && (
+                        <div id="successAlert" className={divStyle} role="alert">
+                            <InformationCircleIcon className="size-5" />
+                            <span className="sr-only">Info</span>
+                            <div className="ms-3 text-sm font-medium">
+                                {options.message}
+                            </div>
+                        </div>
+                    )
+                }
+            </div>
+            
         </div>
     )
 }

@@ -18,11 +18,6 @@ export default function Create({ auth, categoryList }) {
         categories: [],
     });
 
-    const onSubmit = (e) => {
-        e.preventDefault();
-        post(route('brands.store'));
-    }
-
     const handleChange = (e) => {
         let formated = [];
         e.map((option) => {
@@ -30,7 +25,11 @@ export default function Create({ auth, categoryList }) {
         });
         setData('categories', formated);
     }
-
+    
+    const onSubmit = (e) => {
+        e.preventDefault();
+        post(route('brands.store'));
+    }
     return (
         <AuthenticatedLayout
             user={auth}
@@ -72,12 +71,12 @@ export default function Create({ auth, categoryList }) {
                     <InputError message={errors.categories} />
                 </div>
                 <div className="flex flex-wrap m-4 items-center justify-center text-gray-900 dark:text-white">
-                    <button type="submit" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 
-                    focus:outline-none focus:ring-blue-300 font-medium 
+                    <button type="submit" className="text-white bg-green-700 hover:bg-green-800 focus:ring-4 
+                    focus:outline-none focus:ring-green-300 font-medium 
                     rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center 
-                    dark:bg-blue-600 dark:hover:bg-blue-700 
-                    dark:focus:ring-blue-800 mb-2">
-                        Submit
+                    dark:bg-green-600 dark:hover:bg-green-700 
+                    dark:focus:ring-green-800 mb-2">
+                        Create
                     </button>
                     <button type="button" className="text-gray-400 bg-white hover:bg-gray-100 focus:outline-none 
                     focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm 

@@ -23,11 +23,12 @@ export default function Create({ auth, categoryList, brandList }) {
 
     useEffect(() => {
         if (quill) {
-            quill.on('text-change', (delta, oldDelta, source) => {
+            quill.on('text-change', () => {
                 setData('description', quill.root.innerHTML);
             });
+
         }
-    }, [quill]);
+    }, [quill, data]);
 
     const options = [];
     categoryList.map((cat) => {
@@ -68,7 +69,7 @@ export default function Create({ auth, categoryList, brandList }) {
                 <div className="relative z-0 w-full mb-5 group">
                     <label htmlFor="description" className={labelCSS}>Description</label>
                     <div className="h-60">
-                        <div className="dark:text-white" ref={quillRef} />
+                        <div ref={quillRef} />
                     </div>
                     <InputError message={errors.description} />
                 </div><br />
@@ -133,11 +134,11 @@ export default function Create({ auth, categoryList, brandList }) {
                     <InputError message={errors.categories} />
                 </div>
                 <div className="flex flex-wrap m-4 items-center justify-center text-gray-900 dark:text-white">
-                    <button type="submit" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 
-                    focus:outline-none focus:ring-blue-300 font-medium 
+                    <button type="submit" className="text-white bg-green-700 hover:bg-green-800 focus:ring-4 
+                    focus:outline-none focus:ring-green-300 font-medium 
                     rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center 
-                    dark:bg-blue-600 dark:hover:bg-blue-700 
-                    dark:focus:ring-blue-800 mb-2">
+                    dark:bg-green-600 dark:hover:bg-green-700 
+                    dark:focus:ring-green-800 mb-2">
                         Create
                     </button>
                     <button type="button" className="text-gray-400 bg-white hover:bg-gray-100 focus:outline-none 

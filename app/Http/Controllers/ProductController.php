@@ -19,13 +19,13 @@ class ProductController extends Controller
      */
     public function index()
     {
-
         $query = Product::query();
 
         $products = $query->paginate(10);
 
         return inertia('Product/Index', [
             'products' => ProductResource::collection($products),
+            'options' => session('options'),
         ]);
     }
 
@@ -48,6 +48,7 @@ class ProductController extends Controller
      */
     public function store(StoreProductRequest $request)
     {
+        $validatedForm = $request->validated();
         $files = $request->file('images');
         if ($files) {
             $images = [];
@@ -62,8 +63,6 @@ class ProductController extends Controller
                 ]);
             }
         }
-
-        $validatedForm = $request->validated();
         $validatedForm['images'] = json_encode($images);
         $validatedForm['created_by'] = Auth::id();
         $validatedForm['updated_by'] = Auth::id();
@@ -74,7 +73,12 @@ class ProductController extends Controller
 
         $product->categories()->saveMany($cat);
 
-        return to_route('products.show', $product);
+        $options = [
+            'message' => "Product: " . Str::upper($product->name) . " was created!",
+            'action' => "create",
+        ];
+
+        return to_route('products.index')->with('options', $options);
     }
 
     /**
@@ -136,7 +140,12 @@ class ProductController extends Controller
 
         $product->categories()->sync($cat);
 
-        return to_route('products.index')->with('success', `Product: ` . Str::upper($product->name) . ` was updated!`);
+        $options = [
+            'message' => "Product: " . Str::upper($product->name) . " was updated!",
+            'action' => "update",
+        ];
+
+        return to_route('products.index')->with('options', $options);
     }
 
     /**
@@ -144,8 +153,13 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
-        Storage::disk('public')->deleteDirectory(dirname($product[0]->image_path, 2));
+        $imagesJson = json_decode($product->images);
+        Storage::disk('public')->deleteDirectory(dirname($imagesJson[0]->image_path, 2));
         $product->delete();
-        return to_route('products.index')->with('success',  `Product: ` . Str::upper($product->name) . ` was deleted!`);
+        $options = [
+            'message' => "Product: " . Str::upper($product->name) . " was deleted!",
+            'action' => "delete",
+        ];
+        return to_route('products.index')->with('options', $options);
     }
 }

@@ -63,7 +63,6 @@ export default function Edit({ auth, product, categoryList, brandList }) {
 
     const onSubmit = (e) => {
         e.preventDefault();
-        console.log(data);
         post(route('products.update', product.id));
     }
 

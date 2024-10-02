@@ -29,7 +29,7 @@ class BrandController extends Controller
         return inertia('Brand/Index', [
             'brands' => BrandResource::collection($brands),
             'queryParams' => request()->query() ?: null,
-            'success' => session('success'),
+            'options' => session('options'),
         ]);
     }
 
@@ -74,7 +74,12 @@ class BrandController extends Controller
 
         $brand->categories()->saveMany($cat);
 
-        return to_route('brands.index')->with('success',  `Brand: ` . Str::upper($brand->name) . ` was created!`);
+        $options = [
+            'message' => "Brand: " . Str::upper($brand->name) . " was created!",
+            'action' => "create",
+        ];
+
+        return to_route('brands.index')->with('options', $options);
     }
 
     /**
@@ -115,7 +120,12 @@ class BrandController extends Controller
         $cat = Category::find($validatedForm['categories']);
         $brand->categories()->sync($cat);
 
-        return to_route('brands.index')->with('success',  `Brand: ` . Str::upper($brand->name) . ` was updated!`);
+        $options = [
+            'message' => "Brand: " . Str::upper($brand->name) . " was updated!",
+            'action' => "update",
+        ];
+
+        return to_route('brands.index')->with('options', $options);
     }
 
     /**
@@ -125,6 +135,11 @@ class BrandController extends Controller
     {
         Storage::disk('public')->deleteDirectory(dirname($brand->logo, 2));
         $brand->delete();
-        return to_route('brands.index')->with('success', `Brand: ` . Str::upper($brand->name) . ` was deleted!`);
+        $options = [
+            'message' => "Brand: " . Str::upper($brand->name) . " was deleted!",
+            'action' => "delete",
+        ];
+
+        return to_route('brands.index')->with('options', $options);
     }
 }

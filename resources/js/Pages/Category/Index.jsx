@@ -28,7 +28,7 @@ export default function Index({ auth, categories, options }) {
             <div className="w-5/6">
 
                 <div className="row-start-1">
-                    <AlertDiv options={options} path={route('categories.create')} />                    
+                    <AlertDiv options={options} path={route('categories.create')} />
                 </div>
 
                 <div className="row-start-2 md:ml-2">
