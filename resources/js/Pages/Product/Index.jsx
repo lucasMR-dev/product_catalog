@@ -5,11 +5,10 @@ import { ClipboardDocumentCheckIcon, EyeIcon, TrashIcon } from '@heroicons/react
 import { router } from '@inertiajs/react';
 import { NumericFormat } from 'react-number-format';
 import AlertDiv from '@/Components/AlertDiv';
+import * as Constants from '../../Constants';
 
 const TABLE_HEAD = ["ID", "Name", "Images", "Description", "Brand", "Price", "Stock", "Categories"];
-const classes = "format p-4 border-b border-blue-gray-50 md:text-sm sm:text-xs dark:text-white";
-
-const Storage = 'http://localhost:8000/storage/';
+const classes = Constants.classes;
 
 const deleteProduct = (product) => {
     if (!window.confirm('Are you sure you want to delete Product: ' + product.name + ' ?')) {
@@ -71,15 +70,13 @@ export default function Index({ auth, options, products }) {
                                             {
                                                 images.slice(0, 2).map((img) => {
                                                     return (
-                                                        <img key={img.image_path} className="w-24 h-24 rounded-full" src={Storage + img.image_path} />
+                                                        <img key={img.image_path} className="w-24 h-24 rounded-full" src={Constants.Storage + img.image_path} />
                                                     )
                                                 })
                                             }
                                         </td>
                                         <td className={classes}>
-                                            <p className="truncate hover:text-clip">
-                                                {product.description}
-                                            </p>
+                                            <div className="truncate hover:text-clip" dangerouslySetInnerHTML={{__html:  product.description}} />
                                         </td>
                                         <td className={classes}>
                                             {
@@ -89,7 +86,7 @@ export default function Index({ auth, options, products }) {
                                                         className="text-white"
                                                         href={route('brands.show', product.brand.id)}
                                                     >
-                                                        <img className="rounded-full" src={Storage + product.brand.logo} />
+                                                        <img className="rounded-full" src={Constants.Storage + product.brand.logo} />
                                                     </Link>
                                                 )
                                             }

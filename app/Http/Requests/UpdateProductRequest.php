@@ -26,7 +26,7 @@ class UpdateProductRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'min:2', 'max:255'],
-            'description' => ['nullable', 'string'],
+            'description' => ['required', 'string'],
             'images' => ['nullable', 'array'],
             'brand_id' => ['required', Rule::exists(Brand::class, 'id')],
             'categories' => ['nullable', 'array', Rule::exists(Category::class, 'id')],

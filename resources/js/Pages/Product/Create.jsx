@@ -5,9 +5,10 @@ import { Head, Link, useForm } from "@inertiajs/react";
 import { useQuill } from 'react-quilljs';
 import { useEffect } from "react";
 import Select from 'react-select';
+import * as Constants from '../../Constants';
 
-const inputCSS = "block py-2.5 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer";
-const labelCSS = "peer-focus:font-medium text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6";
+const inputCSS = Constants.inputCSS;
+const labelCSS = Constants.labelCSS;
 
 export default function Create({ auth, categoryList, brandList }) {
     const { quill, quillRef } = useQuill();
@@ -100,8 +101,9 @@ export default function Create({ auth, categoryList, brandList }) {
                         <input className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer 
                             bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 
                             dark:border-gray-600 dark:placeholder-gray-400"
-                            aria-describedby="images_help" id="images" type="file" multiple
+                            aria-describedby="images_help" id="images" type="file" accept="image/*"
                             onChange={(e) => handleImages(e)}
+                            multiple
                         />
                         <span className="mt-1 text-sm text-gray-500 dark:text-gray-300" id="images_help">PNG, JPG or GIF (Max. Size 7MB).</span>
                         <InputError message={errors.images} />

@@ -26,7 +26,7 @@ class UpdateBrandRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'min:2', 'max:255', Rule::unique(Brand::class)->ignore($this->brand->id)],
-            'logo' => ['nullable', 'image'],
+            'logo' => ['nullable', 'image', 'mimes:jpeg,png,jpg', 'size:5000'],
             'categories' => ['nullable', 'array', Rule::exists(Category::class, 'id')]
         ];
     }

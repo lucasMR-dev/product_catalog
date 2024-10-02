@@ -78,10 +78,11 @@ export default function UpdateProfileInformation({
                         <div>
                             <InputLabel htmlFor="image_profile" value="Image Profile" />
                             <input className="mt-1 block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer 
-                            bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 
-                            dark:border-gray-600 dark:placeholder-gray-400"
+                                bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 
+                                dark:border-gray-600 dark:placeholder-gray-400"
                                 aria-describedby="logo_help" id="image_profile" type="file"
                                 onChange={(e) => setData("image_profile", e.target.files[0])}
+                                accept="image/*"
                             />
                             <span className="mt-1 text-sm text-gray-500 dark:text-gray-300" id="logo_help">PNG, JPG or GIF (Max. Size 7MB).</span>
                             <InputError className="mt-2" message={errors.image_profile} />

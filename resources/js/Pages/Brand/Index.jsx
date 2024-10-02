@@ -4,11 +4,10 @@ import Pagination from '@/Components/Pagination';
 import { ClipboardDocumentCheckIcon, EyeIcon, TrashIcon } from '@heroicons/react/24/outline';
 import { router } from '@inertiajs/react';
 import AlertDiv from '@/Components/AlertDiv';
+import * as Constants from '../../Constants';
 
 const TABLE_HEAD = ["ID", "Name", "Logo", "Categories"];
-const classes = "format p-4 border-b border-blue-gray-50 md:text-sm sm:text-xs dark:text-white";
-
-const Storage = 'http://localhost:8000/storage/';
+const classes = Constants.classes;
 
 const deleteBrand = (brand) => {
     if (!window.confirm('Are you sure you want to delete Brand: ' + brand.name + ' ? \n This action will delete permanently all related Products.')) {
@@ -62,7 +61,7 @@ export default function Index({ auth, brands, options }) {
                                             {brand.name}
                                         </td>
                                         <td className={classes}>
-                                            <img className="rounded-full w-24" src={Storage + brand.logo} />
+                                            <img className="rounded-full w-24" src={Constants.Storage + brand.logo} />
                                         </td>
                                         <td className={classes}>
                                             {brand.categories.map((cat) => {
@@ -81,11 +80,11 @@ export default function Index({ auth, brands, options }) {
                                         </td>
                                         <td>
                                             <div className="flex justify-center">
-                                                <Link
+                                                {/*<Link
                                                     href={route('brands.show', brand.id)}
                                                 >
                                                     <EyeIcon className="mx-2 size-6 text-gray-500" title="Show" />
-                                                </Link>
+                                                </Link>*/}
                                                 <Link
                                                     href={route('brands.edit', brand.id)}
                                                 >
