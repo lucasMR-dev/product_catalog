@@ -3,8 +3,7 @@ import { ClipboardDocumentCheckIcon, XMarkIcon } from "@heroicons/react/24/outli
 import { Head, Link } from "@inertiajs/react";
 import { NumericFormat } from "react-number-format";
 import { PhotoProvider, PhotoView } from 'react-photo-view';
-
-const Storage = 'http://localhost:8000/storage/';
+import * as Constants from '../../Constants';
 
 export default function Show({ auth, product }) {
     const images = JSON.parse(product.images);
@@ -45,7 +44,7 @@ export default function Show({ auth, product }) {
                                 className="dark:text-white"
                                 href={route('brands.show', product.brand.id)}
                             >
-                                <img className="rounded-full w-24" src={Storage+product.brand.logo} />
+                                <img className="rounded-full w-24" src={Constants.Storage+product.brand.logo} />
                             </Link>
                         </div>
                         <ul className="flex flex-wrap items-center justify-center text-gray-900 dark:text-white">
@@ -72,8 +71,8 @@ export default function Show({ auth, product }) {
                     >
                         <div className="flex flex-wrap items-center my-6">
                             {images.map((img, index) => (
-                                <PhotoView key={index} src={Storage + img.image_path}>
-                                    <img src={Storage + img.image_path} alt="" className="mr-2 mb-2 w-36 h-36 cursor-pointer object-cover" />
+                                <PhotoView key={index} src={Constants.Storage + img.image_path}>
+                                    <img src={Constants.Storage + img.image_path} alt="" className="mr-2 mb-2 w-36 h-36 cursor-pointer object-cover" />
                                 </PhotoView>
                             ))}
                         </div>

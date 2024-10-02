@@ -1,8 +1,6 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, Link } from "@inertiajs/react";
-import { PhotoProvider, PhotoView } from "react-photo-view";
-
-const Storage = 'http://localhost:8000/storage/';
+import * as Constants from '../../Constants';
 
 export default function Show({ auth, category }) {
     return (
@@ -26,7 +24,7 @@ export default function Show({ auth, category }) {
                                     href={route('brands.show', brand.id)}
                                     className="dark:text-white"
                                 >
-                                    <img src={Storage + brand.logo} alt="" className="mr-2 mb-2 w-12 h-12 cursor-pointer object-cover" />
+                                    <img src={Constants.Storage + brand.logo} alt="" className="mr-2 mb-2 w-12 h-12 cursor-pointer object-cover" />
                                 </Link>
                             ))}
                         </div>

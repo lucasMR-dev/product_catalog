@@ -5,9 +5,10 @@ import { Head, Link, useForm } from "@inertiajs/react";
 import { useQuill } from 'react-quilljs';
 import { useEffect } from "react";
 import Select from 'react-select';
+import * as Constants from '../../Constants';
 
-const inputCSS = "block py-2.5 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer";
-const labelCSS = "peer-focus:font-medium text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6";
+const inputCSS = Constants.inputCSS;
+const labelCSS = Constants.labelCSS;
 
 export default function Create({ auth, categoryList, brandList }) {
     const { quill, quillRef } = useQuill();
@@ -23,11 +24,12 @@ export default function Create({ auth, categoryList, brandList }) {
 
     useEffect(() => {
         if (quill) {
-            quill.on('text-change', (delta, oldDelta, source) => {
+            quill.on('text-change', () => {
                 setData('description', quill.root.innerHTML);
             });
+
         }
-    }, [quill]);
+    }, [quill, data]);
 
     const options = [];
     categoryList.map((cat) => {
@@ -68,7 +70,7 @@ export default function Create({ auth, categoryList, brandList }) {
                 <div className="relative z-0 w-full mb-5 group">
                     <label htmlFor="description" className={labelCSS}>Description</label>
                     <div className="h-60">
-                        <div className="dark:text-white" ref={quillRef} />
+                        <div ref={quillRef} />
                     </div>
                     <InputError message={errors.description} />
                 </div><br />
@@ -99,8 +101,9 @@ export default function Create({ auth, categoryList, brandList }) {
                         <input className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer 
                             bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 
                             dark:border-gray-600 dark:placeholder-gray-400"
-                            aria-describedby="images_help" id="images" type="file" multiple
+                            aria-describedby="images_help" id="images" type="file" accept="image/*"
                             onChange={(e) => handleImages(e)}
+                            multiple
                         />
                         <span className="mt-1 text-sm text-gray-500 dark:text-gray-300" id="images_help">PNG, JPG or GIF (Max. Size 7MB).</span>
                         <InputError message={errors.images} />
@@ -133,11 +136,11 @@ export default function Create({ auth, categoryList, brandList }) {
                     <InputError message={errors.categories} />
                 </div>
                 <div className="flex flex-wrap m-4 items-center justify-center text-gray-900 dark:text-white">
-                    <button type="submit" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 
-                    focus:outline-none focus:ring-blue-300 font-medium 
+                    <button type="submit" className="text-white bg-green-700 hover:bg-green-800 focus:ring-4 
+                    focus:outline-none focus:ring-green-300 font-medium 
                     rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center 
-                    dark:bg-blue-600 dark:hover:bg-blue-700 
-                    dark:focus:ring-blue-800 mb-2">
+                    dark:bg-green-600 dark:hover:bg-green-700 
+                    dark:focus:ring-green-800 mb-2">
                         Create
                     </button>
                     <button type="button" className="text-gray-400 bg-white hover:bg-gray-100 focus:outline-none 

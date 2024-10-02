@@ -5,10 +5,11 @@ import Pagination from '@/Components/Pagination';
 import { ClipboardDocumentCheckIcon, EyeIcon, TrashIcon } from '@heroicons/react/24/outline';
 import { router } from '@inertiajs/react';
 import AlertDiv from '@/Components/AlertDiv';
+import * as Constants from '../../Constants';
 
 const TABLE_HEAD = ["ID", "Name", "Created By", "Updated By",];
 
-const classes = "format p-4 border-b border-blue-gray-50 md:text-sm sm:text-xs dark:text-white";
+const classes = Constants.classes;
 
 const deleteCategory = (category) => {
     if (!window.confirm('Are you sure you want to delete Category: ' + category.name + ' ? \n This action will delete permanently all related Brands and Products.')) {
@@ -28,7 +29,7 @@ export default function Index({ auth, categories, options }) {
             <div className="w-5/6">
 
                 <div className="row-start-1">
-                    <AlertDiv options={options} path={route('categories.create')} />                    
+                    <AlertDiv options={options} path={route('categories.create')} />
                 </div>
 
                 <div className="row-start-2 md:ml-2">

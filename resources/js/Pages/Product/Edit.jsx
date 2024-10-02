@@ -5,11 +5,10 @@ import { Head, Link, useForm } from "@inertiajs/react";
 import { useQuill } from 'react-quilljs';
 import { useEffect, useState } from "react";
 import Select from 'react-select';
+import * as Constants from '../../Constants';
 
-const inputCSS = "block py-2.5 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer";
-const labelCSS = "peer-focus:font-medium text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6";
-
-const Storage = 'http://localhost:8000/storage/';
+const inputCSS = Constants.inputCSS;
+const labelCSS = Constants.labelCSS;
 
 export default function Edit({ auth, product, categoryList, brandList }) {
     const { quill, quillRef } = useQuill();
@@ -32,11 +31,11 @@ export default function Edit({ auth, product, categoryList, brandList }) {
     useEffect(() => {
         if (quill) {
             quill.clipboard.dangerouslyPasteHTML(product.description);
-            quill.on('text-change', (delta, oldDelta, source) => {
+            quill.on('text-change', () => {
                 setData('description', quill.root.innerHTML);
             });
         }
-    }, [quill]);
+    }, [quill, data]);
 
     const options = [];
     categoryList.map((cat) => {
@@ -45,7 +44,7 @@ export default function Edit({ auth, product, categoryList, brandList }) {
     const currentCategories = [];
     product.categories.map((cat) => {
         currentCategories.push({ id: cat.id, value: cat.id, label: cat.name });
-    });   
+    });
 
     const handleImages = (e) => {
         let files = Array.from(e.target.files);
@@ -63,7 +62,6 @@ export default function Edit({ auth, product, categoryList, brandList }) {
 
     const onSubmit = (e) => {
         e.preventDefault();
-        console.log(data);
         post(route('products.update', product.id));
     }
 
@@ -117,7 +115,7 @@ export default function Edit({ auth, product, categoryList, brandList }) {
                                 {
                                     JSON.parse(product.images).map((img) => {
                                         return (
-                                            <img key={img.display_pos} src={Storage + img.image_path} className="px-3" alt="" />
+                                            <img key={img.display_pos} src={Constants.Storage + img.image_path} className="px-3" alt="" />
                                         )
                                     })}
                             </div>
@@ -125,7 +123,10 @@ export default function Edit({ auth, product, categoryList, brandList }) {
                         <input className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer 
                             bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 
                             dark:border-gray-600 dark:placeholder-gray-400"
-                            aria-describedby="images_help" id="images" type="file" multiple onChange={(e) => handleImages(e)}
+                            aria-describedby="images_help" id="images" type="file"
+                            onChange={(e) => handleImages(e)}
+                            accept="image/*"
+                            multiple
                         />
                         <span className="mt-1 text-sm text-gray-500 dark:text-gray-300" id="images_help">PNG, JPG or GIF (Max. Size 7MB).</span>
                         <InputError message={errors.images} />
