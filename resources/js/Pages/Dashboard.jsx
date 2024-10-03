@@ -124,7 +124,7 @@ export default function Dashboard({ auth }) {
             <Head title="Dashboard" />
             {/* First Row */}
             <div className="row-start-1 md:ml-2">
-                <div className="grid grid-cols-3 md:grid-cols-4 gap-4 ">
+                <div className="grid grid-cols-1 gap-2 mx-auto md:grid-cols-2 lg:grid-cols-3 md:gap-4">
                     <div className="max-w-md p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700">
                         <div className="flex items-center justify-between mb-4">
                             <h5 className="text-xl font-bold leading-none text-gray-900 dark:text-white">Latest Customers</h5>
@@ -242,10 +242,10 @@ export default function Dashboard({ auth }) {
             </div>
             {/* Second Row */}
             <div className="row-start-2 md:ml-2 m-4">
-                <div className="grid grid-cols-2">
+                <div className="grid grid-cols-1 gap-2 lg:grid-cols-2 md:gap-4">
                     <div className="relative overflow-x-auto mr-5">
                         <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                            <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                            <thead className="text-xs text-gray-700 uppercase bg-gray-200 dark:bg-gray-700 dark:text-gray-400">
                                 <tr>
                                     <th scope="col" className="px-6 py-3">
                                         Product name
@@ -388,7 +388,7 @@ export default function Dashboard({ auth }) {
             </div>
             {/* Third Row */}
             <div className="row-start-3 md:ml-2 m-4">
-                <div className="grid grid-cols-2">
+                <div className="grid grid-cols-1 lg:grid-cols-2">
                     <div>
                         <ol className="relative border-s border-gray-200 dark:border-gray-700">
                             <li className="mb-10 ms-4">

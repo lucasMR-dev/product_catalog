@@ -1,22 +1,14 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import React, { useState, useEffect } from "react";
-import { Head, Link } from '@inertiajs/react';
+import { Head } from '@inertiajs/react';
 import Pagination from '@/Components/Pagination';
-import { ClipboardDocumentCheckIcon, EyeIcon, TrashIcon } from '@heroicons/react/24/outline';
-import { router } from '@inertiajs/react';
 import AlertDiv from '@/Components/AlertDiv';
 import * as Constants from '../../Constants';
+import ActionsDiv from '@/Components/ActionsDiv';
 
-const TABLE_HEAD = ["ID", "Name", "Created By", "Updated By",];
+const TABLE_HEAD = ["#ID", "Name", "Created By", "Updated By",];
 
 const classes = Constants.classes;
-
-const deleteCategory = (category) => {
-    if (!window.confirm('Are you sure you want to delete Category: ' + category.name + ' ? \n This action will delete permanently all related Brands and Products.')) {
-        return
-    }
-    router.delete(route('categories.destroy', category.id));
-}
 
 export default function Index({ auth, categories, options }) {
     return (
@@ -26,27 +18,27 @@ export default function Index({ auth, categories, options }) {
         >
             <Head title="Categories" />
 
-            <div className="w-5/6">
+            <div className="lg:w-5/6">
 
                 <div className="row-start-1">
                     <AlertDiv options={options} path={route('categories.create')} />
                 </div>
 
                 <div className="row-start-2 md:ml-2">
-                    <table className="table-fixed w-full text-left overflow-scroll dark:bg-gray-800">
+                    <table className="table-auto w-full text-center overflow-scroll dark:bg-gray-800">
                         <thead>
                             <tr>
                                 {TABLE_HEAD.map((head) => (
                                     <th
                                         key={head}
-                                        className="format bg-gray-200 p-4 md:text-sm sm:text-xs dark:bg-gray-500 dark:text-white"
+                                        className="format bg-gray-200 text-nowrap p-2 lg:p-4 text-xs md:text-sm dark:bg-gray-500 dark:text-white"
                                     >
                                         {head}
                                     </th>
                                 ))}
                                 <th
                                     key="Actions"
-                                    className="format text-center bg-gray-200 md:text-sm sm:text-xs dark:bg-gray-500 dark:text-white w-32"
+                                    className="format text-center bg-gray-200 text-xs md:text-sm dark:bg-gray-500 dark:text-white"
                                 >
                                     Actions
                                 </th>
@@ -64,31 +56,13 @@ export default function Index({ auth, categories, options }) {
                                             {category.name}
                                         </td>
                                         <td className={classes}>
-                                            {category.createdBy.name}<br /> {category.createdBy.email}
+                                            {category.createdBy.name}
                                         </td>
                                         <td className={classes}>
-                                            {category.updatedBy.name}<br /> {category.updatedBy.email}
+                                            {category.updatedBy.name}
                                         </td>
                                         <td>
-                                            <div className="flex justify-center">
-                                                <Link
-                                                    href={route('categories.show', category.id)}
-                                                >
-                                                    <EyeIcon className="mx-2 size-6 text-gray-500" title="Show" />
-                                                </Link>
-                                                <Link
-                                                    href={route('categories.edit', category.id)}
-                                                >
-                                                    <ClipboardDocumentCheckIcon className="size-6 text-blue-500" title="Edit" />
-                                                </Link>
-                                                <button
-                                                    type="button"
-                                                    className="text-red-700"
-                                                    onClick={(e) => deleteCategory(category)}
-                                                >
-                                                    <TrashIcon className="mx-2 size-6 text-red-500" title="Delete" />
-                                                </button>
-                                            </div>
+                                            <ActionsDiv href={{ show: 'categories.show', edit: 'categories.edit' }} resource={category} type="category" />
                                         </td>
                                     </tr>
                                 );
