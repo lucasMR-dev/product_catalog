@@ -7,7 +7,7 @@ const currentYear = new Date().getFullYear();
 
 const classes = "text-gray-900 border border-white hover:border-gray-200 dark:border-gray-900 dark:bg-gray-900 dark:hover:border-gray-700 bg-white focus:ring-4 focus:outline-none focus:ring-gray-300 rounded-full text-base font-medium px-5 py-2.5 text-center me-3 mb-3 dark:text-white dark:focus:ring-gray-800";
 
-export default function Welcome({ auth }) {
+export default function LandingPage({ categories, brands, products }) {
     const [darkMode, setDarkMode] = useState((localStorage.theme) === 'dark' ? true : false);
 
     useEffect(() => {

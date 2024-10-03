@@ -12,7 +12,7 @@ export default function Show({ auth, category }) {
 
             <div className="format mx-auto p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 mb-5">
                 <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Category: {category.name}</h5>
-                <div className="grid grid-cols-2 dark:text-white">
+                <div className="grid grid-cols-1 md:grid-cols-2 dark:text-white">
                     <div>
                         <p>Related Brands:</p>
                     </div>
@@ -24,13 +24,16 @@ export default function Show({ auth, category }) {
                                     href={route('brands.show', brand.id)}
                                     className="dark:text-white"
                                 >
-                                    <img src={Constants.Storage + brand.logo} alt="" className="mr-2 mb-2 w-12 h-12 cursor-pointer object-cover" />
+                                    <img src={Constants.Storage + brand.logo}
+                                        className="mr-2 mb-2 w-12 h-12 md:w-24 md:h-24 lg:w-32 lg:h-32 cursor-pointer object-cover"
+                                        alt=""
+                                    />
                                 </Link>
                             ))}
                         </div>
                     </div>
                 </div>
-                <div className="grid grid-cols-2 dark:text-white">
+                <div className="grid grid-cols-1 md:grid-cols-2 dark:text-white">
                     <div>
                         <p>Related Products:</p>
                     </div>

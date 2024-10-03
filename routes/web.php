@@ -4,17 +4,12 @@ use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
-use Illuminate\Foundation\Application;
+use App\Http\Controllers\LadingPageController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 // Open Site
-Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
-});
+Route::get('/', fn() => Inertia::render('LandingPage', [LadingPageController::class, 'index']));
 
 // Redirect Sub domain
 Route::redirect('admin/', 'admin/dashboard');

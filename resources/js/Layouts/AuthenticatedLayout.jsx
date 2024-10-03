@@ -151,10 +151,10 @@ export default function AuthenticatedLayout({ header, children }) {
 
             <main>
                 <div className="flex bg-slate-50 dark:bg-gray-800">
-                    <div className="w-1/5">
+                    <div className="hidden md:block md:w-1/5">
                         <Sidebar />
                     </div>
-                    <div className="w-4/5 mt-2 sm:items-center sm:ms-6 bg-slate-50 dark:bg-gray-800">
+                    <div className="w-full md:w-4/5 lg:w-4/5 mt-2 items-center bg-slate-50 dark:bg-gray-800">
                         {children}
                     </div>
                 </div>

@@ -35,7 +35,7 @@ export default function Edit({ auth, product, categoryList, brandList }) {
                 setData('description', quill.root.innerHTML);
             });
         }
-    }, [quill, data]);
+    }, [quill]);
 
     const options = [];
     categoryList.map((cat) => {
@@ -80,7 +80,7 @@ export default function Edit({ auth, product, categoryList, brandList }) {
                 </div>
                 <div className="relative z-0 w-full mb-5 group">
                     <label htmlFor="description" className={labelCSS}>Description</label>
-                    <div className="h-60">
+                    <div className="lg:h-60">
                         <div ref={quillRef} />
                     </div>
                     <InputError message={errors.description} />
@@ -162,15 +162,15 @@ export default function Edit({ auth, product, categoryList, brandList }) {
                 <div className="flex flex-wrap m-4 items-center justify-center text-gray-900 dark:text-white">
                     <button type="submit" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 
                     focus:outline-none focus:ring-blue-300 font-medium 
-                    rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center 
+                    rounded-lg text-sm w-full md:w-auto px-5 py-2.5 text-center 
                     dark:bg-blue-600 dark:hover:bg-blue-700 
                     dark:focus:ring-blue-800 mb-2">
                         Update
                     </button>
                     <button type="button" className="text-gray-400 bg-white hover:bg-gray-100 focus:outline-none 
                     focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm 
-                    px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 
-                    dark:focus:ring-gray-700 dark:border-gray-700 mb-2 ml-2">
+                    px-5 py-2.5 me-2 mb-2 dark:bg-gray-500 dark:hover:bg-gray-700 
+                    dark:focus:ring-gray-700 dark:border-gray-700 mb-2 md:ml-2 w-full md:w-auto dark:text-white">
                         <Link href={route('products.index')}>
                             Cancel
                         </Link>
