@@ -15,7 +15,7 @@ export default function Show({ auth, product }) {
         >
             <Head title="Show Product" />
 
-            <div className="w-4/5 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+            <div className="lg:w-11/12 mx-auto bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
                 <div className="px-5 pb-5">
                     <a href="#">
                         <h5 className="mt-5 text-xl font-semibold tracking-tight text-gray-900 dark:text-white">{product.name}</h5>
@@ -23,37 +23,41 @@ export default function Show({ auth, product }) {
                     <div className="flex items-center mt-2.5 mb-5">
                         <div className="dark:text-white" dangerouslySetInnerHTML={description} />
                     </div>
-                    <div className="flex items-center justify-between">
-                        <div className="dark:text-white">
-                            <span className="format dark:text-white">Price:</span>&nbsp;
-                            <NumericFormat
-                                value={product.price}
-                                displayType={'text'}
-                                thousandSeparator={true}
-                                prefix={'$'}
-                            />
+                    <hr className="m-2" />
+                    <div className="grid grid-cols-2 md:flex md:items-center md:justify-between">
+                        <div className="lg:items-center lg:justify-center dark:text-white">
+                            <span className="format text-xs md:text-sm dark:text-white">
+                                Price:&nbsp;
+                                <NumericFormat
+                                    value={product.price}
+                                    displayType={'text'}
+                                    thousandSeparator={true}
+                                    prefix={'$'}
+                                />
+                            </span>
                         </div>
-                        <div className="dark:text-white">
-                            <span className="format dark:text-white">Available in Stock:</span>&nbsp;
-                            {product.stock}
+                        <div className="lg:items-center lg:justify-center dark:text-white">
+                            <span className="format text-xs md:text-sm dark:text-white">Available in Stock: {product.stock}</span>
                         </div>
-                        <div className="flex flex-wrap items-center justify-center">
-                            <span className="format dark:text-white">Brand:</span>&nbsp;
+                        <div className="lg:flex lg:flex-wrap lg:items-center lg:justify-center">
+                            <span className="format text-xs md:text-sm dark:text-white">
+                                Brand:
+                            </span>
                             <Link
                                 key={product.brand.id}
                                 className="dark:text-white"
                                 href={route('brands.show', product.brand.id)}
                             >
-                                <img className="rounded-full w-24" src={Constants.Storage+product.brand.logo} />
+                                <img className="rounded-full w-12 md:w-24" src={Constants.Storage + product.brand.logo} />
                             </Link>
                         </div>
-                        <ul className="flex flex-wrap items-center justify-center text-gray-900 dark:text-white">
-                            Categories:
+                        <ul className="lg:flex lg:flex-wrap lg:items-center lg:justify-center text-gray-900 dark:text-white">
+                            <span className="format text-xs md:text-sm dark:text-white">Categories:</span>&nbsp;
                             {product.categories.map((cat) => {
                                 return (
                                     <Link
                                         key={cat.id}
-                                        className="format dark:text-white"
+                                        className="format text-xs md:text-sm dark:text-white"
                                         href={route('categories.show', cat.id)}
                                     >
                                         <li key={cat.id} className="p-2">
@@ -65,6 +69,7 @@ export default function Show({ auth, product }) {
                         </ul>
                     </div>
                 </div>
+                <hr className="m-2" />
                 <div className="items-center mx-auto w-4/5">
                     <PhotoProvider
                         maskOpacity={0.5}
@@ -76,16 +81,17 @@ export default function Show({ auth, product }) {
                                 </PhotoView>
                             ))}
                         </div>
-                    </PhotoProvider>                    
+                    </PhotoProvider>
                 </div>
-                <div className="flex items-center justify-between">
-                    <div className="mx-auto">
-                        <span className="format dark:text-white">Created on: {Date(product.created_at)}</span> <br />
-                        <span className="format dark:text-white">By user: {product.createdBy.name} // {product.createdBy.email} </span>
+                <hr className="m-2" />
+                <div className="hidden lg:w-4/5 md:grid md:grid-cols-1 lg:flex lg:justify-between items-center mx-auto">
+                    <div className="text-center lg:text-left">
+                        <span className="format text-xs lg:text-sm dark:text-white">Created on: {Date(product.created_at)}</span> <br />
+                        <span className="format text-xs lg:text-sm dark:text-white">By user: {product.createdBy.name} // {product.createdBy.email} </span>
                     </div>
-                    <div className="mx-auto">
-                        <span className="format dark:text-white">Last updated on: {Date(product.updated_at)} </span><br />
-                        <span className="format dark:text-white">By user: {product.updatedBy.name} // {product.updatedBy.email} </span>
+                    <div className="text-center lg:text-left">
+                        <span className="format text-xs lg:text-sm dark:text-white">Last updated on: {Date(product.updated_at)} </span><br />
+                        <span className="format text-xs lg:text-sm dark:text-white">By user: {product.updatedBy.name} // {product.updatedBy.email} </span>
                     </div>
                 </div>
                 <div className="flex flex-wrap m-4 items-center justify-center text-gray-900 dark:text-white">
