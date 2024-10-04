@@ -3,6 +3,7 @@ import TextInput from "@/Components/TextInput";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, Link, useForm } from "@inertiajs/react";
 import * as Constants from '../../Constants';
+import ButtonFormDiv from "@/Components/ButtonFormDiv";
 
 const inputCSS = Constants.inputCSS;
 const labelCSS = Constants.labelCSS;
@@ -30,23 +31,7 @@ export default function Edit({ auth, category }) {
                     <TextInput id="name" type="text" className={inputCSS} value={data.name} isFocused={true} onChange={(e) => setData('name', e.target.value)} />
                     <InputError message={errors.name} />
                 </div>
-                <div className="flex flex-wrap m-4 items-center justify-center text-gray-900 dark:text-white">
-                    <button type="submit" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 
-                    focus:outline-none focus:ring-blue-300 font-medium 
-                    rounded-lg text-sm w-full md:w-auto px-5 py-2.5 text-center 
-                    dark:bg-blue-600 dark:hover:bg-blue-700 
-                    dark:focus:ring-blue-800 mb-2">
-                        Update
-                    </button>
-                    <button type="button" className="text-gray-400 bg-white hover:bg-gray-100 focus:outline-none 
-                    focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm 
-                    px-5 py-2.5 me-2 mb-2 dark:bg-gray-500 dark:hover:bg-gray-700 
-                    dark:focus:ring-gray-700 dark:border-gray-700 mb-2 md:ml-2 w-full md:w-auto dark:text-white">
-                        <Link href={route('categories.index')}>
-                            Cancel
-                        </Link>
-                    </button>
-                </div>
+                <ButtonFormDiv href="categories.index" display="Update" />
             </form>
         </AuthenticatedLayout>
     )

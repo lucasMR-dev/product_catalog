@@ -27,11 +27,12 @@ export default function ActionsDiv({ href, resource, type }) {
 
     return (
         <div className="flex justify-center">
-            <Link
+            {type === 'brand' ? null : <Link
                 href={route(href.show, resource.id)}
             >
                 <EyeIcon className="mx-2 size-5 lg:size-7 text-gray-500" title="Show" />
             </Link>
+            }
             <Link
                 href={route(href.edit, resource.id)}
             >
