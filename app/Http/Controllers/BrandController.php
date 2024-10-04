@@ -106,7 +106,7 @@ class BrandController extends Controller
 
         if ($image) {
             if ($brand->logo) {
-                Storage::disk('public')->deleteDirectory(dirname($brand->logo));
+                Storage::disk('public')->deleteDirectory(dirname($brand->logo, 2));
             }
             $validatedForm['logo'] = $image->store('brands/' . Str::random() . '/logo', 'public');
         } else {
