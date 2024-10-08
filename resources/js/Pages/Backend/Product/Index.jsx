@@ -3,7 +3,7 @@ import { Head, Link } from '@inertiajs/react';
 import Pagination from '@/Components/Pagination';
 import { NumericFormat } from 'react-number-format';
 import AlertDiv from '@/Components/AlertDiv';
-import * as Constants from '../../Constants';
+import * as Constants from '@/Constants';
 import ActionsDiv from '@/Components/ActionsDiv';
 
 const TABLE_HEAD = ["#ID", "Name", "Images", "Description", "Brand", "Price", "Stock", "Categories"];

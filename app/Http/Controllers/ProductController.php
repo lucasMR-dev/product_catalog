@@ -23,7 +23,7 @@ class ProductController extends Controller
 
         $products = $query->paginate(10);
 
-        return inertia('Product/Index', [
+        return inertia('Backend/Product/Index', [
             'products' => ProductResource::collection($products),
             'options' => session('options'),
         ]);
@@ -37,7 +37,7 @@ class ProductController extends Controller
         $categoryList = Category::all();
         $brandList = Brand::all();
 
-        return inertia('Product/Create', [
+        return inertia('Backend/Product/Create', [
             'categoryList' => $categoryList,
             'brandList' => $brandList,
         ]);
@@ -86,7 +86,7 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
-        return inertia('Product/Show', [
+        return inertia('Backend/Product/Show', [
             'product' => new ProductResource($product),
         ]);
     }
@@ -99,7 +99,7 @@ class ProductController extends Controller
         $categoryList = Category::all();
         $brandList = Brand::all();
 
-        return inertia('Product/Edit', [
+        return inertia('Backend/Product/Edit', [
             'product' => new ProductResource($product),
             'categoryList' => $categoryList,
             'brandList' => $brandList,

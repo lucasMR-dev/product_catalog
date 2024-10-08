@@ -1,6 +1,6 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, Link } from "@inertiajs/react";
-import * as Constants from '../../Constants';
+import * as Constants from '@/Constants';
 
 export default function Show({ auth, brand }) {
     return (

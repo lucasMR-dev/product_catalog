@@ -20,7 +20,7 @@ class ProfileController extends Controller
      */
     public function edit(Request $request): Response
     {
-        return Inertia::render('Profile/Edit', [
+        return Inertia::render('Backend/Profile/Edit', [
             'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
             'status' => session('status'),
         ]);
@@ -40,7 +40,7 @@ class ProfileController extends Controller
 
         if ($request->file('image_profile')) {
             if ($picture) {
-                Storage::disk('public')->deleteDirectory(dirname($picture));
+                Storage::disk('public')->deleteDirectory(dirname($picture), 2);
             }
             $request->user()->image_profile = $request->file('image_profile')->store('users/profile/'. Str::random(), 'public');
         } else {
@@ -63,7 +63,7 @@ class ProfileController extends Controller
 
         $user = $request->user();
         if ($user->image_profile) {
-            Storage::disk('public')->deleteDirectory(dirname($user->image_profile));
+            Storage::disk('public')->deleteDirectory(dirname($user->image_profile), 2);
         }
 
         Auth::logout();

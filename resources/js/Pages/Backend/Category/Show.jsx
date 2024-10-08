@@ -1,6 +1,6 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, Link } from "@inertiajs/react";
-import * as Constants from '../../Constants';
+import * as Constants from '@/Constants';
 
 export default function Show({ auth, category }) {
     return (
@@ -21,7 +21,7 @@ export default function Show({ auth, category }) {
                             {category.brands.map((brand) => (
                                 <Link
                                     key={brand.id}
-                                    href={route('brands.show', brand.id)}
+                                    href={route('brands.edit', brand.id)}
                                     className="dark:text-white"
                                 >
                                     <img src={Constants.Storage + brand.logo}

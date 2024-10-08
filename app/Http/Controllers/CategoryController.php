@@ -24,7 +24,7 @@ class CategoryController extends Controller
 
         $categories = $query->paginate(10);
 
-        return inertia("Category/Index", [
+        return inertia("Backend/Category/Index", [
             'categories' => CategoryResource::collection($categories),
             'queryParams' => request()->query() ?: null,
             'options' => session('options'),
@@ -36,7 +36,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        return inertia('Category/Create');
+        return inertia('Backend/Category/Create');
     }
 
     /**
@@ -63,7 +63,7 @@ class CategoryController extends Controller
      */
     public function show(Category $category)
     {
-        return inertia('Category/Show', [
+        return inertia('Backend/Category/Show', [
             'category' => new CategoryResource($category),
         ]);
     }
@@ -73,7 +73,7 @@ class CategoryController extends Controller
      */
     public function edit(Category $category)
     {
-        return inertia('Category/Edit', [
+        return inertia('Backend/Category/Edit', [
             'category' => new CategoryResource($category),
         ]);
     }
