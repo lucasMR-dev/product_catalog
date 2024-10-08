@@ -4,19 +4,23 @@ use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\LadingPageController;
+use App\Http\Controllers\CatalogController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-// Open Site
-Route::get('/', fn() => Inertia::render('LandingPage', [LadingPageController::class, 'index']));
+// Frontend
+Route::redirect('/', 'catalog');
 
-// Redirect Sub domain
+Route::prefix('catalog')->group(function () {
+    Route::get('/', [CatalogController::class, 'index'])->name('catalog.index');
+    Route::get('/product/{id}', [CatalogController::class, 'show'])->name('catalog.product');
+    Route::post('/', [CatalogController::class, 'index'])->name('catalog.index');
+});
+
 Route::redirect('admin/', 'admin/dashboard');
-
-// Only logged users
+// Backend
 Route::prefix('admin')->middleware(['auth', 'verified'])->group(function () {
-    Route::get('/dashboard', fn() => Inertia::render('Dashboard'))->name('dashboard');
+    Route::get('/dashboard', fn() => Inertia::render('Backend/Dashboard'))->name('dashboard');
     Route::resource('categories', CategoryController::class);
     Route::resource('brands', BrandController::class);
     Route::resource('products', ProductController::class);
@@ -27,4 +31,4 @@ Route::prefix('admin')->middleware(['auth', 'verified'])->group(function () {
     });
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

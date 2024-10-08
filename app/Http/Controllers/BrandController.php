@@ -26,7 +26,7 @@ class BrandController extends Controller
 
         $brands = $query->paginate(10);
 
-        return inertia('Brand/Index', [
+        return inertia('Backend/Brand/Index', [
             'brands' => BrandResource::collection($brands),
             'queryParams' => request()->query() ?: null,
             'options' => session('options'),
@@ -38,7 +38,7 @@ class BrandController extends Controller
      */
     public function show(Brand $brand)
     {
-        return inertia('Brand/Show', [
+        return inertia('Backend/Brand/Show', [
             'brand' => new BrandResource($brand),
         ]);
     }
@@ -50,7 +50,7 @@ class BrandController extends Controller
     {
         $categoryList = Category::all();
 
-        return inertia('Brand/Create', [
+        return inertia('Backend/Brand/Create', [
             'categoryList' => $categoryList,
         ]);
     }
@@ -89,7 +89,7 @@ class BrandController extends Controller
     {
         $categoryList = Category::all();
 
-        return inertia('Brand/Edit', [
+        return inertia('Backend/Brand/Edit', [
             'brand' => new BrandResource($brand),
             'categoryList' => $categoryList
         ]);

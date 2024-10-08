@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { Head } from '@inertiajs/react';
 import Pagination from '@/Components/Pagination';
 import AlertDiv from '@/Components/AlertDiv';
-import * as Constants from '../../Constants';
+import * as Constants from '@/Constants';
 import ActionsDiv from '@/Components/ActionsDiv';
 
 const TABLE_HEAD = ["#ID", "Name", "Created By", "Updated By",];

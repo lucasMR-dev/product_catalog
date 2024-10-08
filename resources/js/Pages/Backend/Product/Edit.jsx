@@ -3,43 +3,54 @@ import TextInput from "@/Components/TextInput";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, Link, useForm } from "@inertiajs/react";
 import { useQuill } from 'react-quilljs';
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Select from 'react-select';
-import * as Constants from '../../Constants';
+import * as Constants from '@/Constants';
 import ButtonFormDiv from "@/Components/ButtonFormDiv";
 
 const inputCSS = Constants.inputCSS;
 const labelCSS = Constants.labelCSS;
 
-export default function Create({ auth, categoryList, brandList }) {
+export default function Edit({ auth, product, categoryList, brandList }) {
     const { quill, quillRef } = useQuill();
+    const [showDiv, setShowDiv] = useState(true);
+    const initial = [];
+    product.categories.map((cat) => {
+        initial.push(cat.id);
+    });
     const { data, setData, post, errors } = useForm({
-        name: '',
-        description: '',
+        name: product.name || '',
+        description: product.description || '',
         images: [],
-        brand_id: '',
-        categories: [],
-        stock: 0,
-        price: 0,
+        brand_id: product.brand.id || '',
+        categories: initial || [],
+        price: Number(product.price.replace(/[^0-9\.]+/g, "")) || 0,
+        stock: product.stock || 0,
+        _method: 'PUT'
     });
 
     useEffect(() => {
         if (quill) {
+            quill.clipboard.dangerouslyPasteHTML(product.description);
             quill.on('text-change', () => {
                 setData('description', quill.root.innerHTML);
             });
-
         }
-    }, [quill, data]);
+    }, [quill]);
 
     const options = [];
     categoryList.map((cat) => {
         options.push({ value: cat.id, label: cat.name });
     });
+    const currentCategories = [];
+    product.categories.map((cat) => {
+        currentCategories.push({ id: cat.id, value: cat.id, label: cat.name });
+    });
 
     const handleImages = (e) => {
         let files = Array.from(e.target.files);
         setData('images', files);
+        setShowDiv(false);
     }
 
     const handleChange = (e) => {
@@ -52,7 +63,7 @@ export default function Create({ auth, categoryList, brandList }) {
 
     const onSubmit = (e) => {
         e.preventDefault();
-        post(route('products.store'));
+        post(route('products.update', product.id));
     }
 
     return (
@@ -70,7 +81,7 @@ export default function Create({ auth, categoryList, brandList }) {
                 </div>
                 <div className="relative z-0 w-full mb-5 group">
                     <label htmlFor="description" className={labelCSS}>Description</label>
-                    <div className="h-60">
+                    <div className="lg:h-60">
                         <div ref={quillRef} />
                     </div>
                     <InputError message={errors.description} />
@@ -85,8 +96,9 @@ export default function Create({ auth, categoryList, brandList }) {
                             dark:border-gray-600 dark:placeholder-gray-400 dark:text-white 
                             dark:focus:ring-blue-500 dark:focus:border-blue-500"
                             onChange={(e) => setData('brand_id', e.target.value)}
+                            defaultValue={product.brand.id}
                         >
-                            <option defaultValue="">Existing Brands</option>
+                            <option defaultValue="">Brands</option>
                             {brandList.map((brand) => {
                                 return (
                                     <option key={brand.id} value={brand.id}>{brand.name}</option>
@@ -99,11 +111,22 @@ export default function Create({ auth, categoryList, brandList }) {
                 <div className="relative z-0 w-full mb-5 group">
                     <div className="w-full">
                         <label htmlFor="images" className={labelCSS}>Images</label>
+                        {showDiv && (
+                            <div className="flex flex-wrap items-center my-6">
+                                {
+                                    JSON.parse(product.images).map((img) => {
+                                        return (
+                                            <img key={img.display_pos} src={Constants.Storage + img.image_path} className="px-3" alt="" />
+                                        )
+                                    })}
+                            </div>
+                        )}
                         <input className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer 
                             bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 
                             dark:border-gray-600 dark:placeholder-gray-400"
-                            aria-describedby="images_help" id="images" type="file" accept="image/*"
+                            aria-describedby="images_help" id="images" type="file"
                             onChange={(e) => handleImages(e)}
+                            accept="image/*"
                             multiple
                         />
                         <span className="mt-1 text-sm text-gray-500 dark:text-gray-300" id="images_help">PNG, JPG or GIF (Max. Size 7MB).</span>
@@ -127,6 +150,7 @@ export default function Create({ auth, categoryList, brandList }) {
                             isMulti
                             name="categories"
                             id="categories"
+                            defaultValue={currentCategories}
                             options={options}
                             className="basic-multi-select"
                             classNamePrefix="select"
@@ -136,7 +160,7 @@ export default function Create({ auth, categoryList, brandList }) {
                     }
                     <InputError message={errors.categories} />
                 </div>
-                <ButtonFormDiv href="products.index" display="Create" />
+                <ButtonFormDiv href="products.index" display="Update" />
             </form>
         </AuthenticatedLayout>
     )

@@ -2,7 +2,7 @@ import InputError from "@/Components/InputError";
 import TextInput from "@/Components/TextInput";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, Link, useForm } from "@inertiajs/react";
-import * as Constants from '../../Constants';
+import * as Constants from '@/Constants';
 import ButtonFormDiv from "@/Components/ButtonFormDiv";
 
 const inputCSS = Constants.inputCSS;

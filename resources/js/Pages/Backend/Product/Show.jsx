@@ -3,7 +3,7 @@ import { ClipboardDocumentCheckIcon, XMarkIcon } from "@heroicons/react/24/outli
 import { Head, Link } from "@inertiajs/react";
 import { NumericFormat } from "react-number-format";
 import { PhotoProvider, PhotoView } from 'react-photo-view';
-import * as Constants from '../../Constants';
+import * as Constants from '@/Constants';
 
 export default function Show({ auth, product }) {
     const images = JSON.parse(product.images);

@@ -6,7 +6,7 @@ import { Link, usePage } from '@inertiajs/react';
 import Sidebar from '@/Components/Sidebar';
 import Footer from '@/Components/Footer';
 import { MoonIcon } from "@heroicons/react/24/outline";
-import * as Constants from '../constants';
+import * as Constants from '@/Constants';
 
 export default function AuthenticatedLayout({ header, children }) {
     const user = usePage().props.auth.user;
