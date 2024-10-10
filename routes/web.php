@@ -13,8 +13,7 @@ Route::redirect('/', 'catalog');
 
 Route::prefix('catalog')->group(function () {
     Route::get('/', [CatalogController::class, 'index'])->name('catalog.index');
-    Route::get('/product/{id}', [CatalogController::class, 'show'])->name('catalog.product');
-    Route::post('/', [CatalogController::class, 'index'])->name('catalog.index');
+    Route::get('/product/{name}', [CatalogController::class, 'show'])->name('catalog.product');
 });
 
 Route::redirect('admin/', 'admin/dashboard');

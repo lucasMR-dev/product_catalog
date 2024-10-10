@@ -8,7 +8,6 @@ use App\Models\Product;
 use App\Http\Resources\BrandResource;
 use App\Http\Resources\CategoryResource;
 use App\Http\Resources\ProductResource;
-use Illuminate\Http\Request;
 
 class CatalogController extends Controller
 {
@@ -17,29 +16,43 @@ class CatalogController extends Controller
      */
     public function index()
     {
-        $brands = Brand::query()->paginate(10);
-        $categories = Category::query()->paginate(10);
+        $brands = Brand::query();
+        $categories = Category::query();
         $products = Product::query();
 
+        // Default Values
+        $sort_field = "id";
+        $sort_dir = "ASC";
+        $perPage = 5;
+
+        // Name Filter
         if (request("name")) {
             $products->where("name", "like", "%" . request("name") . "%");
         }
 
+        // Brand Filter
         if (request("brand")) {
-            $products->where("brand_id", "=", intval(request("brand")));
+            $brand = Brand::whereName(request("brand"))->first();
+            $id = [$brand->id];
+            $categories->whereHas("brands", function ($query) use ($id) {
+                $query->whereIn('id', $id);
+            })->get();
+            $products->where("brand_id", "=", $brand->id);
         }
 
+        // Category Filter
         if (request("category")) {
-            $ids = [];
-            array_push($ids, request("category"));
-            $products->whereHas("categories", function ($query) use ($ids) {
-                $query->whereIn('id', $ids);
+            $category = Category::whereName(request("category"))->first();
+            $id = [$category->id];
+            $products->whereHas("categories", function ($query) use ($id) {
+                $query->whereIn('id', $id);
+            })->get();
+            $brands->whereHas("categories", function ($query) use ($id) {
+                $query->whereIn('id', $id);
             })->get();
         }
 
-        $sort_field = "id";
-        $sort_dir = "ASC";
-
+        // Order By
         if (request("filterSort")) {
             $field = explode(":", request("filterSort"));
             $dir = explode("/ ", request("filterSort"));
@@ -47,10 +60,15 @@ class CatalogController extends Controller
             $sort_dir = $dir[1];
         }
 
+        // Per Page
+        if (request("perPage")) {
+            $perPage = intval(request("perPage"));
+        }
+
         return inertia('Frontend/LandingPage', [
-            'products' => ProductResource::collection($products->orderBy($sort_field, $sort_dir)->paginate(10)),
-            'categories' => CategoryResource::collection($categories),
-            'brands' => BrandResource::collection($brands),
+            'products' => ProductResource::collection($products->orderBy($sort_field, $sort_dir)->paginate($perPage)->withQueryString()),
+            'categories' => CategoryResource::collection($categories->paginate()),
+            'brands' => BrandResource::collection($brands->paginate()),
             'searchParams' => request()->query() ?: null
         ]);
     }
@@ -60,9 +78,10 @@ class CatalogController extends Controller
      */
     public function show()
     {
-        $product = Product::find(request()->id);
+        $product = Product::whereName(request()->name)->first();
         return inertia('Frontend/Product/Show', [
             'product' => new ProductResource($product),
+            'searchParams' => request()->query() ?: null
         ]);
     }
 }
