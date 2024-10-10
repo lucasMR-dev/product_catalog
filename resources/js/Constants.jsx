@@ -9,53 +9,21 @@ export const labelCSS = "peer-focus:font-medium text-sm text-gray-500 dark:text-
 
 // Frontend
 export const gridClasses = "cursor-pointer text-gray-900 bg-white hover:bg-gray-100 border border-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-600 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 me-2 mb-2 [&.active]:bg-blue-400";
-export const data = [
-    {
-        id: 1,
-        name: 'Apple Watch Series 7 GPS, Aluminium Case, Starlight Sport',
-        path: 'https://flowbite.s3.amazonaws.com/docs/gallery/square/image.jpg',
-        price: 599
-    },
-    {
-        id: 2,
-        name: 'Apple Watch Series 7 GPS, Aluminium Case, Starlight Sport',
-        path: 'https://flowbite.s3.amazonaws.com/docs/gallery/square/image-1.jpg',
-        price: 599
-    },
-    {
-        id: 3,
-        name: 'Apple Watch Series 7 GPS, Aluminium Case, Starlight Sport',
-        path: 'https://flowbite.s3.amazonaws.com/docs/gallery/square/image-2.jpg',
-        price: 599
-    },
-    {
-        id: 4,
-        name: 'Apple Watch Series 7 GPS, Aluminium Case, Starlight Sport',
-        path: 'https://flowbite.s3.amazonaws.com/docs/gallery/square/image-3.jpg',
-        price: 599
-    },
-    {
-        id: 5,
-        name: 'Apple Watch Series 7 GPS, Aluminium Case, Starlight Sport',
-        path: 'https://flowbite.s3.amazonaws.com/docs/gallery/square/image-4.jpg',
-        price: 599
-    },
-    {
-        id: 6,
-        name: 'Apple Watch Series 7 GPS, Aluminium Case, Starlight Sport',
-        path: 'https://flowbite.s3.amazonaws.com/docs/gallery/square/image-5.jpg',
-        price: 599
-    },
-    {
-        id: 7,
-        name: 'Apple Watch Series 7 GPS, Aluminium Case, Starlight Sport',
-        path: 'https://flowbite.s3.amazonaws.com/docs/gallery/square/image-6.jpg',
-        price: 599
-    },
-    {
-        id: 8,
-        name: 'Apple Watch Series 7 GPS, Aluminium Case, Starlight Sport',
-        path: 'https://flowbite.s3.amazonaws.com/docs/gallery/square/image-7.jpg',
-        price: 599
-    },
-]
+export const filterClasses = "self-center cursor-pointer text-gray-900 bg-white hover:bg-gray-100 border border-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-600 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 me-2";
+export const sortBy = [
+    { name: 'Name: A-Z', order: 'ASC' },
+    { name: 'Price: Low to High', order: 'ASC' },
+    { name: 'Price: High to Low', order: 'DESC' },
+];
+
+export const pagination = [
+    { name: '3' },
+    { name: '5' },
+    { name: '10' },
+    { name: '20' },
+];
+
+export const cart = [
+    { name: 'first', quantity: 2, img: 'brands/Di6G4aHFmrOy4FRT/logo/VjfeV94O1RrmHAMMwBzOmUqTfJ56O1mnwQtr4Ceo.png' },
+    { name: 'second', quantity: 1, img: 'products/1KLcwTj1YVHRKxGc/images/xKqWFFzZo8at36lLX5cqUGliAMLUOGevwW5tv4NP.png' },
+];
