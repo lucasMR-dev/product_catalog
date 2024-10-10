@@ -4,7 +4,6 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Support\Number;
 
 class ProductResource extends JsonResource
 {
@@ -22,7 +21,7 @@ class ProductResource extends JsonResource
             'description' => $this->description,
             'images' => $this->images,
             'stock' => $this->stock,
-            'price' => Number::currency($this->price),
+            'price' => $this->price,
             'categories' => $this->categories,
             'brand' => new BrandResource($this->brand),
             'createdBy' => new UserResource($this->createdBy),
