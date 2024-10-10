@@ -29,7 +29,7 @@ export default function AuthenticatedLayout({ header, children }) {
     };
 
     return (
-        <div>
+        <div className="md:min-h-full">
             {header && (
                 <header>
                     <nav className="bg-slate-100 dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700">
@@ -154,7 +154,7 @@ export default function AuthenticatedLayout({ header, children }) {
                     <div className="hidden md:block md:w-1/5">
                         <Sidebar />
                     </div>
-                    <div className="w-full md:w-4/5 lg:w-4/5 mt-2 items-center bg-slate-50 dark:bg-gray-800">
+                    <div className="w-full mt-2 items-center bg-slate-50 dark:bg-gray-800">
                         {children}
                     </div>
                 </div>
