@@ -18,7 +18,7 @@ export default function Index({ auth, categories, options }) {
         >
             <Head title="Categories" />
 
-            <div className="lg:w-5/6">
+            <div className="lg:w-11/12">
 
                 <div className="row-start-1">
                     <AlertDiv options={options} path={route('categories.create')} />

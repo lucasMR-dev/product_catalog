@@ -24,7 +24,7 @@ export default function Edit({ auth, product, categoryList, brandList }) {
         images: [],
         brand_id: product.brand.id || '',
         categories: initial || [],
-        price: Number(product.price.replace(/[^0-9\.]+/g, "")) || 0,
+        price: product.price,
         stock: product.stock || 0,
         _method: 'PUT'
     });

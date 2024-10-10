@@ -63,9 +63,6 @@ export default function Index({ auth, options, products }) {
                                             }
                                         </td>
                                         <td className={classes}>
-                                            <div className="truncate" dangerouslySetInnerHTML={{ __html: product.description }} />
-                                        </td>
-                                        <td className={classes}>
                                             {
                                                 product.brand && (
                                                     <Link
@@ -73,7 +70,7 @@ export default function Index({ auth, options, products }) {
                                                         className="text-white"
                                                         href={route('brands.show', product.brand.id)}
                                                     >
-                                                        <img className="rounded-full" src={Constants.Storage + product.brand.logo} />
+                                                        <img className="rounded-full w-32" src={Constants.Storage + product.brand.logo} />
                                                     </Link>
                                                 )
                                             }
@@ -82,7 +79,8 @@ export default function Index({ auth, options, products }) {
                                             <NumericFormat
                                                 value={product.price}
                                                 displayType={'text'}
-                                                thousandSeparator={true}
+                                                thousandSeparator={'.'}
+                                                decimalSeparator={','}
                                                 prefix={'$'}
                                             />
                                         </td>

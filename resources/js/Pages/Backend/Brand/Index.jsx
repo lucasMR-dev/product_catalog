@@ -16,7 +16,7 @@ export default function Index({ auth, brands, options }) {
         >
             <Head title="Brands" />
 
-            <div className="lg:w-5/6">
+            <div className="lg:w-11/12">
                 {/* Div Alert */}
                 <div className="row-start-1">
                     <AlertDiv options={options} path={route('brands.create')} />
