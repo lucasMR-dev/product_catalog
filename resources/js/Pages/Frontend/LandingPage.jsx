@@ -1,5 +1,4 @@
 import { Link, Head, router } from '@inertiajs/react';
-import { MagnifyingGlassIcon, ShoppingCartIcon } from "@heroicons/react/24/outline";
 import { NumericFormat } from 'react-number-format';
 import * as Constants from '@/Constants';
 import MainLayout from '@/Layouts/MainLayout';
@@ -21,7 +20,6 @@ export default function LandingPage({ categories, brands, products, searchParams
     }
     return (
         <MainLayout
-            cart={Constants.cart}
             searchParams={searchParams}
             header={<h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">Products Catalog</h2>}
         >
