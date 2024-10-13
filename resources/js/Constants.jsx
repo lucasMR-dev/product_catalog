@@ -22,8 +22,3 @@ export const pagination = [
     { name: '10' },
     { name: '20' },
 ];
-
-export const cart = [
-    { name: 'first', quantity: 2, img: 'brands/Di6G4aHFmrOy4FRT/logo/VjfeV94O1RrmHAMMwBzOmUqTfJ56O1mnwQtr4Ceo.png' },
-    { name: 'second', quantity: 1, img: 'products/1KLcwTj1YVHRKxGc/images/xKqWFFzZo8at36lLX5cqUGliAMLUOGevwW5tv4NP.png' },
-];
