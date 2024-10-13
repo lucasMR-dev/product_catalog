@@ -1,4 +1,5 @@
 import ApplicationLogo from '@/Components/ApplicationLogo';
+import CartDiv from '@/Components/CartDiv';
 import ScrollUpButton from '@/Components/ScrollUpButton';
 import { MagnifyingGlassIcon, MoonIcon, ShoppingCartIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import { Link, router } from '@inertiajs/react';
@@ -10,6 +11,11 @@ const currentYear = new Date().getFullYear();
 export default function MainLayout({ header, searchParams, children }) {
     searchParams = searchParams || {};
     const [darkMode, setDarkMode] = useState((localStorage.theme) === 'dark' ? true : false);
+    const [openCart, setOpenCart] = useState(false);
+    const [cart, setCart] = useState(JSON.parse(sessionStorage.getItem('cart')) || []);
+    const storageEventHandler = () => {
+        setCart(JSON.parse(sessionStorage.getItem('cart')));
+    }
     useEffect(() => {
         const htmlElement = document.documentElement;
         if (darkMode) {
@@ -19,7 +25,8 @@ export default function MainLayout({ header, searchParams, children }) {
             htmlElement.classList.remove("dark");
             localStorage.theme = 'light';
         }
-    }, [darkMode]);
+        window.addEventListener('storage', storageEventHandler, false);
+    }, [darkMode, storageEventHandler]);
 
     const toogleDarkMode = () => {
         setDarkMode(!darkMode);
@@ -69,9 +76,9 @@ export default function MainLayout({ header, searchParams, children }) {
                                 </div>
                                 <input id="default-search"
                                     className="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 
-                                rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 
-                                dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white 
-                                dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                    rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 
+                                    dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white 
+                                    dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                     placeholder="Search Product name or description..."
                                     defaultValue={searchParams ? searchParams.name : ''}
                                     onBlur={(e) => searchFilter("name", e.target.value)}
@@ -84,12 +91,20 @@ export default function MainLayout({ header, searchParams, children }) {
                                 </span>
                             </div>
                         </div>
-                        {/** Theme Toggle */}
+                        {/** Cart Button */}
                         <div className="flex self-center mx-auto">
-                            <ShoppingCartIcon className="mr-5 size-7 md:size-7 text-gray-400 dark:text-gray-300" />
-                            <label className="mx-2 lg:right-5 inline-flex items-center cursor-pointer">
+                            <span className="relative items-baseline hover:cursor-pointer" onClick={() => setOpenCart(true)}>
+                                <ShoppingCartIcon className="size-5 md:size-7 text-gray-400 dark:text-gray-300" />
+                                <span className="absolute -bottom-2 -right-2 
+                                bg-gray-200 md:px-2 lg:-right-2 lg:mr-4 rounded-full text-gray-400 
+                                dark:text-gray-500">{cart.length}</span>
+                            </span>
+                        </div>
+                        {/** Theme Toggle */}
+                        <div className="flex">
+                            <label className="mx-2 inline-flex items-center cursor-pointer">
                                 <input id="darkToogle" type="checkbox" checked={darkMode} onChange={toogleDarkMode} className="sr-only peer" />
-                                <MoonIcon className="size-6 text-gray-500 dark:text-gray-300" />
+                                <MoonIcon className="md:absolute right-4 size-5 md:size-7 lg:right-7 text-gray-500 dark:text-gray-300" />
                             </label>
                         </div>
                     </div>
@@ -97,8 +112,15 @@ export default function MainLayout({ header, searchParams, children }) {
             )}
             {/** Main Div */}
             <main>
-                {children}
-                <ScrollUpButton />
+                <div className="flex">
+                    <div className={openCart ? "w-4/5" : "w-full"}>
+                        {children}
+                        <ScrollUpButton />
+                    </div>
+                    <div className={openCart ? "w-1/5  bg-white dark:bg-gray-800" : "hidden"}>
+                        <CartDiv openCart={setOpenCart} cart={cart} modifyCart={setCart} storage={storageEventHandler} />
+                    </div>
+                </div>
             </main>
             {/** Footer */}
             <footer className="w-full dark:bg-gray-800">
