@@ -19,13 +19,16 @@ export default function Edit({ auth, product, categoryList, brandList }) {
         initial.push(cat.id);
     });
     const { data, setData, post, errors } = useForm({
+        sku: product.sku || '',
         name: product.name || '',
+        slug: product.slug || '',
         description: product.description || '',
         images: [],
         brand_id: product.brand.id || '',
         categories: initial || [],
         price: product.price,
         stock: product.stock || 0,
+        optionsAvailable: product.optionsAvailable || [],
         _method: 'PUT'
     });
 
@@ -66,6 +69,14 @@ export default function Edit({ auth, product, categoryList, brandList }) {
         post(route('products.update', product.id));
     }
 
+    const generateSlug = (name) => {
+        let slug = name.replace(/[`~!@#$%^&*()_\-+=\[\]{};:'"\\|\/,.<>?\s]/g, ' ').toLowerCase();
+        slug = slug.replace(/^\s+|\s+$/gm, '-')
+            .replace(/\s+/g, '-')
+            .replace(/-+/g, '-');
+        setData('slug', slug);
+    }
+
     return (
         <AuthenticatedLayout
             user={auth}
@@ -75,9 +86,22 @@ export default function Edit({ auth, product, categoryList, brandList }) {
 
             <form className="w-4/5 mt-5 mx-auto" onSubmit={onSubmit}>
                 <div className="relative z-0 w-full mb-5 group">
+                    <label htmlFor="sku" className={labelCSS}>SKU</label>
+                    <TextInput id="sku" type="text" className={inputCSS} value={data.sku} isFocused={true} onChange={(e) => setData('sku', e.target.value)} />
+                    <InputError message={errors.sku} />
+                </div>
+                <div className="relative z-0 w-full mb-5 group">
                     <label htmlFor="name" className={labelCSS}>Name</label>
-                    <TextInput id="name" type="text" className={inputCSS} value={data.name} isFocused={true} onChange={(e) => setData('name', e.target.value)} />
+                    <TextInput id="name" type="text" className={inputCSS}
+                        value={data.name}
+                        onChange={(e) => setData('name', e.target.value)}
+                        onBlur={(e) => generateSlug(e.target.value)} />
                     <InputError message={errors.name} />
+                </div>
+                <div className="relative z-0 w-full mb-5 group">
+                    <label htmlFor="slug" className={labelCSS}>slug</label>
+                    <TextInput id="slug" type="text" className={inputCSS + " bg-gray-400 hover:cursor-not-allowed"} value={data.slug} disabled={true} />
+                    <InputError message={errors.slug} />
                 </div>
                 <div className="relative z-0 w-full mb-5 group">
                     <label htmlFor="description" className={labelCSS}>Description</label>

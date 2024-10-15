@@ -14,13 +14,16 @@ const labelCSS = Constants.labelCSS;
 export default function Create({ auth, categoryList, brandList }) {
     const { quill, quillRef } = useQuill();
     const { data, setData, post, errors } = useForm({
+        sky: '',
         name: '',
+        slug: '',
         description: '',
         images: [],
         brand_id: '',
         categories: [],
         stock: 0,
         price: 0,
+        optionsAvailable: []
     });
 
     useEffect(() => {
@@ -55,18 +58,39 @@ export default function Create({ auth, categoryList, brandList }) {
         post(route('products.store'));
     }
 
+    const generateSlug = (name) => {
+        let slug = name.replace(/[`~!@#$%^&*()_\-+=\[\]{};:'"\\|\/,.<>?\s]/g, ' ').toLowerCase();
+        slug = slug.replace(/^\s+|\s+$/gm, '-')
+            .replace(/\s+/g, '-')
+            .replace(/-+/g, '-');
+        setData('slug', slug);
+    }
+
     return (
         <AuthenticatedLayout
             user={auth}
             header={<h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">Product</h2>}
         >
-            <Head title="Product" />
+            <Head title={"Product " + data.name } />
 
             <form className="w-4/5 mt-5 mx-auto" onSubmit={onSubmit}>
                 <div className="relative z-0 w-full mb-5 group">
+                    <label htmlFor="sku" className={labelCSS}>sku</label>
+                    <TextInput id="sku" type="text" className={inputCSS} value={data.sku} isFocused={true} onChange={(e) => setData('sku', e.target.value)} />
+                    <InputError message={errors.sku} />
+                </div>
+                <div className="relative z-0 w-full mb-5 group">
                     <label htmlFor="name" className={labelCSS}>Name</label>
-                    <TextInput id="name" type="text" className={inputCSS} value={data.name} isFocused={true} onChange={(e) => setData('name', e.target.value)} />
+                    <TextInput id="name" type="text" className={inputCSS}
+                        value={data.name}
+                        onChange={(e) => setData('name', e.target.value)}
+                        onBlur={(e) => generateSlug(e.target.value)} />
                     <InputError message={errors.name} />
+                </div>
+                <div className="relative z-0 w-full mb-5 group">
+                    <label htmlFor="slug" className={labelCSS}>slug</label>
+                    <TextInput id="slug" type="text" className={inputCSS + " bg-gray-400 hover:cursor-not-allowed"} value={data.slug} disabled={true} />
+                    <InputError message={errors.slug} />
                 </div>
                 <div className="relative z-0 w-full mb-5 group">
                     <label htmlFor="description" className={labelCSS}>Description</label>

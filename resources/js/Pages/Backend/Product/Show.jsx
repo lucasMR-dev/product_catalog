@@ -17,9 +17,7 @@ export default function Show({ auth, product }) {
 
             <div className="lg:w-11/12 mx-auto bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
                 <div className="px-5 pb-5">
-                    <a href="#">
-                        <h5 className="mt-5 text-xl font-semibold tracking-tight text-gray-900 dark:text-white">{product.name}</h5>
-                    </a>
+                    <h5 className="mt-5 text-xl font-semibold tracking-tight text-gray-900 dark:text-white">{product.name}</h5>
                     <div className="flex items-center mt-2.5 mb-5">
                         <div className="dark:text-white" dangerouslySetInnerHTML={description} />
                     </div>
