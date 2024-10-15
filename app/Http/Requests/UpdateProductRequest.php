@@ -25,13 +25,16 @@ class UpdateProductRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'sku' => ['required', 'string', 'min:8', 'max:12'],
             'name' => ['required', 'string', 'min:2', 'max:255'],
+            'slug' => ['required', 'string'],
             'description' => ['required', 'string'],
             'images' => ['nullable', 'array'],
             'brand_id' => ['required', Rule::exists(Brand::class, 'id')],
             'categories' => ['nullable', 'array', Rule::exists(Category::class, 'id')],
             'stock' => ['nullable', 'numeric'],
-            'price' => ['nullable', 'numeric']
+            'price' => ['nullable', 'numeric'],
+            'optionsAvailable' => ['nullable', 'array']
         ];
     }
 }

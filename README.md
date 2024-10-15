@@ -1,10 +1,10 @@
-## Setup commands
 
+## Setup commands
 - `composer install`
 - `npm install`
 - `cp .env.example .env`
 - `php artisan key:generate` -> After that Setup MySQL configuration
-- `php artisan migrate`
+- `php artisan migrate:refresh --seed`
 - `php artisan storage:link`
 
 
@@ -13,4 +13,5 @@
 - `npm run dev`
 
 ### Links
-- Backend `http://localhost:8000/admin`
+- [Catalog](http://localhost:8000)
+- [Backend](http://localhost:8000/admin)

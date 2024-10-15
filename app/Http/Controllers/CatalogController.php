@@ -78,7 +78,7 @@ class CatalogController extends Controller
      */
     public function show()
     {
-        $product = Product::whereName(request()->name)->first();
+        $product = Product::where("slug", request()->slug)->first();
         return inertia('Frontend/Product/Show', [
             'product' => new ProductResource($product),
             'searchParams' => request()->query() ?: null

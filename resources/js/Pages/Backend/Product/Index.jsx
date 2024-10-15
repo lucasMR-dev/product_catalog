@@ -6,7 +6,7 @@ import AlertDiv from '@/Components/AlertDiv';
 import * as Constants from '@/Constants';
 import ActionsDiv from '@/Components/ActionsDiv';
 
-const TABLE_HEAD = ["#ID", "Name", "Images", "Description", "Brand", "Price", "Stock", "Categories"];
+const TABLE_HEAD = ["SKU", "Name", "Images", "Description", "Brand", "Price", "Stock", "Categories", "Options Available"];
 const classes = Constants.classes;
 
 export default function Index({ auth, options, products }) {
@@ -46,9 +46,9 @@ export default function Index({ auth, options, products }) {
                             {products.data.map((product) => {
                                 const images = JSON.parse(product.images);
                                 return (
-                                    <tr key={product.id}>
+                                    <tr key={product.sku}>
                                         <td className={classes}>
-                                            {product.id}
+                                            {product.sku}
                                         </td>
                                         <td className={classes}>
                                             {product.name}
@@ -102,6 +102,16 @@ export default function Index({ auth, options, products }) {
                                                         </Link>
                                                     )
                                                 })}
+                                            </ul>
+                                        </td>
+                                        <td className={classes}>
+                                            <ul className="list-none">
+                                                { product.optionsAvailable ? product.optionsAvailable.map( (option, index) => {
+                                                    <li key={index} 
+                                                    className="format text-xs md:text-sm dark:text-white">
+                                                        {option}
+                                                    </li>
+                                                }) : null}
                                             </ul>
                                         </td>
                                         <td>

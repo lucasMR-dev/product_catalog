@@ -15,7 +15,7 @@ Route::get('cart', fn() => Inertia::render('Frontend/Cart'))->name('cart');
 
 Route::prefix('catalog')->group(function () {
     Route::get('/', [CatalogController::class, 'index'])->name('catalog.index');
-    Route::get('/product/{name}', [CatalogController::class, 'show'])->name('catalog.product');
+    Route::get('/product/{slug}', [CatalogController::class, 'show'])->name('catalog.product');
 });
 
 Route::redirect('admin/', 'admin/dashboard');

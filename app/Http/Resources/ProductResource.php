@@ -17,11 +17,14 @@ class ProductResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'sku' =>$this->sku,
             'name' => $this->name,
+            'slug' => $this->slug,
             'description' => $this->description,
             'images' => $this->images,
             'stock' => $this->stock,
             'price' => $this->price,
+            'optionsAvailable' => $this->optionsAvailable,
             'categories' => $this->categories,
             'brand' => new BrandResource($this->brand),
             'createdBy' => new UserResource($this->createdBy),
