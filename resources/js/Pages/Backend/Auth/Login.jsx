@@ -33,6 +33,7 @@ export default function Login({ status, canResetPassword }) {
 
             <form onSubmit={submit}>
                 <div>
+                    <span className="format text-gray-500 dark:text-gray-400">Check DatabaseSeeder for dafault credentials.</span>
                     <InputLabel htmlFor="email" value="Email" />
 
                     <TextInput
