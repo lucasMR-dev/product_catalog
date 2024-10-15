@@ -99,7 +99,7 @@ export default function LandingPage({ categories, brands, products, searchParams
                             products.data.map((product) => {
                                 const images = JSON.parse(product.images);
                                 return (
-                                    <Link key={product.id} href={route('catalog.product', product.name)}>
+                                    <Link key={product.id} href={route('catalog.product', product.slug)}>
                                         <div className="h-auto max-w-full bg-white border border-gray-200 
                                             rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
                                             <img className="p-8 h-32 w-full md:h-56 lg:h-96 rounded-t-lg"
