@@ -7,6 +7,7 @@ import MainLayout from "@/Layouts/MainLayout";
 export default function Show({ product, searchParams }) {
     const images = JSON.parse(product.images);
     const description = { __html: product.description };
+    const productOptions = JSON.parse(product.optionsAvailable);
 
     const addToCart = (product) => {
         const data = { id: product.id, name: product.name, quantity: 1, img: images[0].image_path }
@@ -78,19 +79,40 @@ export default function Show({ product, searchParams }) {
                         </div>
                         <ul className="lg:flex lg:flex-wrap lg:items-center lg:justify-center text-gray-900 dark:text-white">
                             <span className="format text-xs md:text-sm dark:text-white">Categories:</span>&nbsp;
-                            {product.categories.map((cat) => {
+                            {product.categories && product.categories.map((cat) => {
                                 return (
                                     <Link
                                         key={cat.id}
                                         className="format text-xs md:text-sm dark:text-white"
                                         href={route('catalog.index', { category: cat.name })}
                                     >
-                                        <li key={cat.id} className="p-2">
+                                        <li key={cat.id} className="bg-gray-200 text-gray-800 text-xs 
+                                                font-medium me-2 px-2.5 py-0.5 rounded-full 
+                                                dark:bg-gray-700 dark:text-gray-300">
                                             {cat.name}
                                         </li>
                                     </Link>
                                 )
                             })}
+                        </ul>
+                        <ul className="list-none">
+                            {productOptions && productOptions.length > 0 ? productOptions.map((items, index) => {
+                                return (
+                                    <li key={index} className="format text-xs md:text-sm dark:text-white">
+                                        <span>{items.name.toUpperCase()}: </span>
+                                        {items.options.map((element, index) => {
+                                            return (
+                                                <span key={index}
+                                                    className="bg-gray-200 text-gray-800 text-xs 
+                                                font-medium me-2 px-2.5 py-0.5 rounded-full 
+                                                dark:bg-gray-700 dark:text-gray-300">
+                                                    {element}
+                                                </span>
+                                            )
+                                        })}
+                                    </li>
+                                )
+                            }) : null}
                         </ul>
                     </div>
                 </div>
