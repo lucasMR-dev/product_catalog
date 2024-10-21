@@ -6,7 +6,7 @@ import AlertDiv from '@/Components/AlertDiv';
 import * as Constants from '@/Constants';
 import ActionsDiv from '@/Components/ActionsDiv';
 
-const TABLE_HEAD = ["SKU", "Name", "Images", "Description", "Brand", "Price", "Stock", "Categories", "Options Available"];
+const TABLE_HEAD = ["SKU", "Name", "Images", "Brand", "Price", "Stock", "Categories", "Options Available"];
 const classes = Constants.classes;
 
 export default function Index({ auth, options, products }) {
@@ -29,7 +29,7 @@ export default function Index({ auth, options, products }) {
                                 {TABLE_HEAD.map((head) => (
                                     <th
                                         key={head}
-                                        className="format bg-gray-200 p-4 md:text-sm text-xs"
+                                        className="format text-nowrap bg-gray-200 p-4 md:text-sm text-xs"
                                     >
                                         {head}
                                     </th>
@@ -45,6 +45,7 @@ export default function Index({ auth, options, products }) {
                         <tbody>
                             {products.data.map((product) => {
                                 const images = JSON.parse(product.images);
+                                const productOptions = JSON.parse(product.optionsAvailable);
                                 return (
                                     <tr key={product.sku}>
                                         <td className={classes}>
@@ -106,11 +107,21 @@ export default function Index({ auth, options, products }) {
                                         </td>
                                         <td className={classes}>
                                             <ul className="list-none">
-                                                { product.optionsAvailable ? product.optionsAvailable.map( (option, index) => {
-                                                    <li key={index} 
-                                                    className="format text-xs md:text-sm dark:text-white">
-                                                        {option}
-                                                    </li>
+                                                {productOptions && productOptions.length > 0 ? productOptions.map((items, index) => {
+                                                    return (
+                                                        <li key={index} className="format text-xs md:text-sm dark:text-white">
+                                                            <span>{items.name.toUpperCase()}: </span>
+                                                            {items.options.map((element, index) => {
+                                                                return (
+                                                                    <span key={index} className="bg-gray-200 text-gray-800 text-xs 
+                                                                        font-medium me-2 px-2.5 py-0.5 rounded-full 
+                                                                        dark:bg-gray-700 dark:text-gray-300">
+                                                                        {element}
+                                                                    </span>
+                                                                )
+                                                            })}
+                                                        </li>
+                                                    )
                                                 }) : null}
                                             </ul>
                                         </td>
