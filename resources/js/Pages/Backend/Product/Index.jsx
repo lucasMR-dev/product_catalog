@@ -56,9 +56,9 @@ export default function Index({ auth, options, products }) {
                                         </td>
                                         <td className={classes}>
                                             {
-                                                images.slice(0, 2).map((img) => {
+                                                images.slice(0, 1).map((img) => {
                                                     return (
-                                                        <img key={img.image_path} className="md:w-24 md:h-24 rounded-full" src={Constants.Storage + img.image_path} />
+                                                        <img key={img.image_path} className="md:w-24 md:h-24" src={Constants.Storage + img.image_path} />
                                                     )
                                                 })
                                             }
