@@ -60,7 +60,7 @@ export default function MainLayout({ header, searchParams, children }) {
         <div className="min-h-screen bg-white flex-col items-center pt-6 sm:justify-center sm:pt-0 dark:bg-gray-800">
             {/** Sticky Header */}
             {header && (
-                <header className="w-full top-0 lg:p-10 lg:sticky bg-white dark:bg-gray-800">
+                <header className="w-full top-0 p-4 md:p-10 md:sticky bg-white dark:bg-gray-800">
                     <div className="flex justify-between">
                         <div className="hidden lg:block mx-auto self-center">
                             <Link href={route('catalog.index')}>
@@ -92,7 +92,7 @@ export default function MainLayout({ header, searchParams, children }) {
                             </div>
                         </div>
                         {/** Cart Button */}
-                        <div className="flex self-center mx-auto">
+                        <div className="flex self-center lg:mx-auto">
                             <span className="relative items-baseline hover:cursor-pointer" onClick={() => setOpenCart(true)}>
                                 <ShoppingCartIcon className="size-5 md:size-7 text-gray-400 dark:text-gray-300" />
                                 <span className="absolute -bottom-2 -right-2 
@@ -102,9 +102,9 @@ export default function MainLayout({ header, searchParams, children }) {
                         </div>
                         {/** Theme Toggle */}
                         <div className="flex">
-                            <label className="mx-2 inline-flex items-center cursor-pointer">
+                            <label className="inline-flex items-center cursor-pointer">
                                 <input id="darkToogle" type="checkbox" checked={darkMode} onChange={toogleDarkMode} className="sr-only peer" />
-                                <MoonIcon className="md:absolute right-4 size-5 md:size-7 lg:right-7 text-gray-500 dark:text-gray-300" />
+                                <MoonIcon className="lg:absolute right-4 size-5 md:size-7 lg:right-7 text-gray-500 dark:text-gray-300" />
                             </label>
                         </div>
                     </div>
@@ -124,8 +124,8 @@ export default function MainLayout({ header, searchParams, children }) {
             </main>
             {/** Footer */}
             <footer className="w-full dark:bg-gray-800">
-                <div className="mx-auto p-2 md:py-8">
-                    <span className="block text-sm text-gray-500 sm:text-center dark:text-gray-400">
+                <div className="mx-auto text-center p-2 md:py-8">
+                    <span className="block text-sm text-gray-500 dark:text-gray-400">
                         © {currentYear} <a href="/" className="hover:underline">{site}™</a>. All Rights Reserved.
                     </span>
                 </div>
