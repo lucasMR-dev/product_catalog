@@ -63,6 +63,7 @@ class ProductController extends Controller
                 ]);
             }
         }
+        $validatedForm['optionsAvailable'] = json_encode($validatedForm['optionsAvailable']);
         $validatedForm['images'] = json_encode($images);
         $validatedForm['created_by'] = Auth::id();
         $validatedForm['updated_by'] = Auth::id();
@@ -133,6 +134,7 @@ class ProductController extends Controller
         }
 
         $validatedForm['updated_by'] = Auth::id();
+        $validatedForm['optionsAvailable'] = json_encode($validatedForm['optionsAvailable']);
 
         $product->update($validatedForm);
 
