@@ -18,6 +18,7 @@ export default function LandingPage({ categories, brands, products, searchParams
         }
         router.get(route('catalog.index', searchParams));
     }
+
     return (
         <MainLayout
             searchParams={searchParams}
@@ -111,13 +112,13 @@ export default function LandingPage({ categories, brands, products, searchParams
                                                     <h5 className="md:text-xl font-semibold tracking-tight text-gray-900 dark:text-white">
                                                         {product.name}
                                                     </h5>
-                                                    <img className="p-8 h-20  rounded-t-lg"
+                                                    <img className="hidden sm:block h-10 md:p-2 lg:p-8 lg:h-20 rounded-lg"
                                                         src={Constants.Storage + product.brand.logo}
                                                         alt="brand logo"
                                                     />
                                                 </div>
                                                 <div className="flex items-center justify-between">
-                                                    <span className="lg:text-3xl font-bold text-gray-900 dark:text-white">
+                                                    <span className="lg:text-3xl font-bold text-gray-500 dark:text-white">
                                                         <NumericFormat
                                                             value={product.price}
                                                             displayType={'text'}
@@ -134,7 +135,7 @@ export default function LandingPage({ categories, brands, products, searchParams
                             })
                         }
                     </div>
-                    <Pagination links={products.meta.links} />
+                    {products.meta.last_page > 1 ? <Pagination links={products.meta.links} /> : null}
                 </div>
             </div>
         </MainLayout>
