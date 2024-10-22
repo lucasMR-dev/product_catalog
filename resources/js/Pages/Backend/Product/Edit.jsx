@@ -137,7 +137,7 @@ export default function Edit({ auth, product, categoryList, brandList }) {
     }
 
     const generateSlug = (name) => {
-        let slug = name.replace(/[`~!@#$%^&*()_\-+=\[\]{};:'"\\|\/,.<>?\s]/g, ' ').toLowerCase();
+        let slug = name.replace(/[`~!¡™@#$%^&*()_\-+=\[\]{};:'"\\|\/,.<>?\s]/g, ' ').toLowerCase();
         slug = slug.replace(/^\s+|\s+$/gm, '-')
             .replace(/\s+/g, '-')
             .replace(/-+/g, '-');

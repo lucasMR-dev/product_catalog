@@ -20,7 +20,7 @@ export default function Create({ auth, categoryList, brandList }) {
     const [optionValues, setOptionValues] = useState([]);
     const [currentKey, setCurrentKey] = useState('');
     const { data, setData, post, errors } = useForm({
-        sky: '',
+        sku: '',
         name: '',
         slug: '',
         description: '',
@@ -122,7 +122,7 @@ export default function Create({ auth, categoryList, brandList }) {
     }
 
     const generateSlug = (name) => {
-        let slug = name.replace(/[`~!¡@#$%^&*()_\-+=\[\]{};:'"\\|\/,.<>?\s]/g, ' ').toLowerCase();
+        let slug = name.replace(/[`~!¡™@#$%^&*()_\-+=\[\]{};:'"\\|\/,.<>?\s]/g, ' ').toLowerCase();
         slug = slug.replace(/^\s+|\s+$/gm, '-')
             .replace(/\s+/g, '-')
             .replace(/-+/g, '-');
