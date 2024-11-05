@@ -20,6 +20,10 @@ module.exports = {
         },
     },
 
+    safelist: [
+        '/^datatable-.*$/',
+    ],
+
     plugins: [
         forms,
         require('flowbite/plugin')({

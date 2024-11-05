@@ -117,14 +117,14 @@ export default function MainLayout({ header, searchParams, children }) {
                         {children}
                         <ScrollUpButton />
                     </div>
-                    <div className={openCart ? "w-1/5  bg-white dark:bg-gray-800" : "hidden"}>
+                    <div className={openCart ? "w-1/5 fixed right-0 bg-white dark:bg-gray-800" : "hidden"}>
                         <CartDiv openCart={setOpenCart} cart={cart} modifyCart={setCart} storage={storageEventHandler} />
                     </div>
                 </div>
             </main>
             {/** Footer */}
-            <footer className="w-full dark:bg-gray-800">
-                <div className="mx-auto text-center p-2 md:py-8">
+            <footer className="md:absolute bottom-0 w-full dark:bg-gray-800">
+                <div className="mx-auto text-center p-8">
                     <span className="block text-sm text-gray-500 dark:text-gray-400">
                         © {currentYear} <a href="/" className="hover:underline">{site}™</a>. All Rights Reserved.
                     </span>
