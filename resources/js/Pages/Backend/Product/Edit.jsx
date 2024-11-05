@@ -1,28 +1,36 @@
 import InputError from "@/Components/InputError";
 import TextInput from "@/Components/TextInput";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Head, useForm } from "@inertiajs/react";
+import { Head, useForm, router } from "@inertiajs/react";
 import { useQuill } from 'react-quilljs';
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import Select from 'react-select';
 import CreatableSelect from 'react-select/creatable';
 import * as Constants from '@/Constants';
 import ButtonFormDiv from "@/Components/ButtonFormDiv";
-import { useRef } from "react";
+import { NumericFormat } from "react-number-format";
+import DragInput from "@/Components/DragInput";
 
 const inputCSS = Constants.inputCSS;
 const labelCSS = Constants.labelCSS;
 
-export default function Edit({ auth, product, categoryList, brandList }) {
+export default function Edit({ auth, product, categories, brands }) {
+    const options = JSON.parse(product.optionsAvailable);
+    const keys = [];
+    if (options) {
+        options.map((items) => {
+            keys.push({ label: items.name, value: items.name });
+        });
+    }
     const { quill, quillRef } = useQuill();
-    const [showDiv, setShowDiv] = useState(true);
     const selectOptionsRef = useRef(null);
+    const categoriesRef = useRef(null);
+    const [currentBrand, setCurrentBrand] = useState({ label: product.brand.name, value: product.brand.id } || []);
     const [disabled, setDisabled] = useState(true);
-    const [optionName, setOptionName] = useState([]);
+    const [optionName, setOptionName] = useState(keys || []);
     const [optionValues, setOptionValues] = useState([]);
     const [currentKey, setCurrentKey] = useState('');
-
-    const categories = [];
+    const productCategories = [];
     const brandOptions = [];
     const categoryOptions = [];
     const initial = [];
@@ -30,15 +38,15 @@ export default function Edit({ auth, product, categoryList, brandList }) {
         initial.push(cat.id);
     });
 
-    product.categories.map((cat) => {
-        categories.push({ label: cat.name, value: cat.id });
+    brands.data.map((brand) => {
+        brandOptions.push({ label: brand.name, value: brand.id });
+    });
+    categories.data.map((cat) => {
+        categoryOptions.push({ label: cat.name, value: cat.id });
     });
 
-    brandList.map((brand) => {
-        brandOptions.push({ label: brand.name, value: brand.id });
-    })
-    categoryList.map((cat) => {
-        categoryOptions.push({ value: cat.id, label: cat.name });
+    product.categories.map((cat) => {
+        productCategories.push({ label: cat.name, value: cat.id });
     });
 
     const { data, setData, post, errors } = useForm({
@@ -51,7 +59,7 @@ export default function Edit({ auth, product, categoryList, brandList }) {
         categories: initial || [],
         price: product.price,
         stock: product.stock || 0,
-        optionsAvailable: product.optionsAvailable || [],
+        optionsAvailable: options || [],
         _method: 'PUT'
     });
 
@@ -62,13 +70,7 @@ export default function Edit({ auth, product, categoryList, brandList }) {
                 setData('description', quill.root.innerHTML);
             });
         }
-    }, [quill, currentKey]);
-
-    const handleImages = (e) => {
-        let files = Array.from(e.target.files);
-        setData('images', files);
-        setShowDiv(false);
-    }
+    }, [quill]);
 
     const createOption = (e) => {
         let option = { label: e, value: e };
@@ -110,10 +112,26 @@ export default function Edit({ auth, product, categoryList, brandList }) {
     const handleChange = (field, e) => {
         const formated = [];
         const current = data.optionsAvailable;
-        e.map((option) => {
+        e.length > 0 ? e.map((option) => {
             formated.push(option.value);
-        });
-        if (field === 'categories') {
+        }) : e;
+        if (field === 'brand_id') {
+            router.visit('/admin/products/' + product['id'] + '/edit', {
+                method: 'get',
+                data: { brand: e.value },
+                only: ['categories'],
+                preserveState: true,
+                preserveScroll: true,
+                onSuccess: (res) => {
+                    const brand = res.url.split('=');
+                    const selected = brandOptions.find(item => item.value == Number(brand[1]));
+                    setCurrentBrand([selected]);
+                    categoriesRef.current.clearValue();
+                }
+            });
+            setData('brand_id', e.value);
+        }
+        else if (field === 'categories') {
             setData('categories', formated);
         }
         else {
@@ -147,7 +165,12 @@ export default function Edit({ auth, product, categoryList, brandList }) {
     return (
         <AuthenticatedLayout
             user={auth}
-            header={<h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">Product</h2>}
+            header={
+                <h2 className="font-semibold text-xl text-gray-800 
+                dark:text-gray-200 leading-tight">
+                    Product
+                </h2>
+            }
         >
             <Head title={"Product " + data.name} />
 
@@ -165,23 +188,48 @@ export default function Edit({ auth, product, categoryList, brandList }) {
                     <div className="inline-flex md:w-3/5 group">
                         <div>
                             <label htmlFor="sku" className={labelCSS}>sku</label>
-                            <TextInput id="sku" type="text" className={inputCSS} value={data.sku} onChange={(e) => setData('sku', e.target.value)} />
+                            <TextInput id="sku" type="text"
+                                className={inputCSS}
+                                value={data.sku}
+                                onChange={(e) => setData('sku', e.target.value)}
+                            />
                             <InputError message={errors.sku} />
                         </div>
                         <div className="px-4">
                             <label htmlFor="price" className={labelCSS}>Price</label>
-                            <TextInput id="price" type="number" className={inputCSS} value={data.price} onChange={(e) => setData('price', e.target.value)} />
+                            <NumericFormat
+                                id="price"
+                                className={inputCSS}
+                                value={data.price}
+                                displayType={'input'}
+                                thousandSeparator={'.'}
+                                decimalSeparator={','}
+                                prefix={'$'}
+                                onValueChange={(values) => {
+                                    setData('price', Number(values.value));
+                                }}
+                            />
                             <InputError message={errors.price} />
                         </div>
                         <div>
                             <label htmlFor="stock" className={labelCSS}>Stock</label>
-                            <TextInput id="stock" type="number" className={inputCSS} value={data.stock} onChange={(e) => setData('stock', e.target.value)} />
+                            <TextInput id="stock" type="number"
+                                className={inputCSS}
+                                value={data.stock}
+                                onChange={(e) => setData('stock', e.target.value)}
+                            />
                             <InputError message={errors.stock} />
                         </div>
                     </div>
                     <div className="md:w-2/5 group">
                         <label htmlFor="slug" className={labelCSS}>slug</label>
-                        <TextInput id="slug" type="text" className={inputCSS + " bg-gray-400 hover:cursor-not-allowed"} value={data.slug} disabled={true} />
+                        <TextInput
+                            id="slug"
+                            type="text"
+                            className={inputCSS + " bg-gray-400 hover:cursor-not-allowed"}
+                            value={data.slug}
+                            disabled={true}
+                        />
                         <InputError message={errors.slug} />
                     </div>
                 </div>
@@ -192,24 +240,25 @@ export default function Edit({ auth, product, categoryList, brandList }) {
                             <Select
                                 name="brand_id"
                                 id="brand_id"
-                                defaultValue={{ label: product.brand.name, value: product.brand.id }}
+                                defaultValue={currentBrand}
                                 options={brandOptions}
                                 className="basic-multi-select bg-white relative"
                                 classNamePrefix="select"
                                 placeholder="Brands"
-                                onChange={(e) => setData('brand_id', e.value)}
+                                onChange={(e) => handleChange('brand_id', e)}
                             />
                         }
-                        <InputError message={errors.brand} />
+                        <InputError message={errors.brand_id} />
                     </div>
                     <div className="md:w-4/5 ml-3 mb-5">
                         <label htmlFor="categories" className={labelCSS}>Categories:</label>
                         {
                             <Select
                                 isMulti
+                                ref={categoriesRef}
                                 name="categories"
                                 id="categories"
-                                defaultValue={categories}
+                                defaultValue={productCategories}
                                 options={categoryOptions}
                                 className="basic-multi-select bg-white relative"
                                 classNamePrefix="select"
@@ -238,17 +287,16 @@ export default function Edit({ auth, product, categoryList, brandList }) {
                             options={optionName}
                             className="basic-multi-select"
                             classNamePrefix="select"
-                            placeholder="Option Name"
+                            placeholder={`Options (${optionName.length})`}
                             onCreateOption={(e) => createOption(e)}
                             onChange={selectOption}
                         />
                     </div>
                     <div className="md:w-1/2 self-end">
-
                         <CreatableSelect
                             ref={selectOptionsRef}
-                            isDisabled={disabled}
                             isMulti
+                            isDisabled={disabled}
                             name="optionsValues"
                             id="optionsValues"
                             value={optionValues}
@@ -260,27 +308,9 @@ export default function Edit({ auth, product, categoryList, brandList }) {
                         <InputError message={errors.optionsAvailable} />
                     </div>
                 </div>
-                <div className="w-full">
+                <div>
                     <label htmlFor="images" className={labelCSS}>Images</label>
-                    {showDiv && (
-                        <div className="flex flex-wrap items-center my-6">
-                            {
-                                JSON.parse(product.images).map((img) => {
-                                    return (
-                                        <img key={img.display_pos} src={Constants.Storage + img.image_path} className="px-3" alt="" />
-                                    )
-                                })}
-                        </div>
-                    )}
-                    <input className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer 
-                            bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 
-                            dark:border-gray-600 dark:placeholder-gray-400"
-                        aria-describedby="images_help" id="images" type="file"
-                        onChange={(e) => handleImages(e)}
-                        accept="image/*"
-                        multiple
-                    />
-                    <span className="mt-1 text-sm text-gray-500 dark:text-gray-300" id="images_help">PNG, JPG or GIF (Max. Size 7MB).</span>
+                    <DragInput productImages={product.images} updateFiles={setData} />
                     <InputError message={errors.images} />
                 </div>
                 <ButtonFormDiv href="products.index" display="Update" />

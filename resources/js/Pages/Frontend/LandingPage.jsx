@@ -94,8 +94,8 @@ export default function LandingPage({ categories, brands, products, searchParams
                     </div>
                 </div>
                 {/* Grid */}
-                <div className="w-4/5 mx-auto">
-                    <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
+                <div className="w-4/5 lg:w-3/5 mx-auto">
+                    <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
                         {
                             products.data.map((product) => {
                                 const images = JSON.parse(product.images);
@@ -103,16 +103,16 @@ export default function LandingPage({ categories, brands, products, searchParams
                                     <Link key={product.id} href={route('catalog.product', product.slug)}>
                                         <div className="h-auto max-w-full bg-white border border-gray-200 
                                             rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-                                            <img className="p-8 h-32 w-full md:h-56 lg:h-96 rounded-t-lg"
+                                            <img className="p-8 h-32 w-full md:h-56 lg:h-56 rounded-t-lg"
                                                 src={Constants.Storage + images[0].image_path}
                                                 alt="product image"
                                             />
                                             <div className="px-5 pb-5">
                                                 <div className="flex items-center justify-between">
-                                                    <h5 className="md:text-xl font-semibold tracking-tight text-gray-900 dark:text-white">
-                                                        {product.name}
-                                                    </h5>
-                                                    <img className="hidden sm:block h-10 md:p-2 lg:p-8 lg:h-20 rounded-lg"
+                                                    <span className="font-semibold tracking-tight text-gray-900 dark:text-white">
+                                                        {product.name.slice(0, 45) + "..."}
+                                                    </span>
+                                                    <img className="hidden md:block h-10 lg:p-8 lg:h-20 rounded-lg"
                                                         src={Constants.Storage + product.brand.logo}
                                                         alt="brand logo"
                                                     />

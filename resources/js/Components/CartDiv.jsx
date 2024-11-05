@@ -30,7 +30,7 @@ export default function CartDiv({ openCart, cart, modifyCart }) {
     return (
         <form>
             <div className="relative dark:text-white mb-4">
-                <h1>Cart Resume</h1>
+                <h1 className="format">Cart Resume</h1>
                 <ArrowsPointingInIcon
                     className="absolute size-6 top-0 right-5 hover:cursor-pointer 
                     justify-end text-gray-500 dark:text-white"
@@ -42,22 +42,26 @@ export default function CartDiv({ openCart, cart, modifyCart }) {
             {currentCart.map((item, index) => {
                 return (
                     <div key={index} className="grid grid-rows-1 grid-flow-col m-2">
+                        <div className="flex">
+                            <img className="w-10 self-center" src={Constants.Storage + item.img} />
+                        </div>
                         <div>
-                            <img className="w-20" src={Constants.Storage + item.img} />
+                            <span className="format text-xs dark:text-white">
+                                {item.name}
+                            </span>
                         </div>
                         <div className="flex col-span-1 self-center">
                             <TextInput
                                 id="qty"
-                                className="format h-12 text-center mr-4"
+                                className="w-16 h-6 text-xs text-center"
                                 type='number'
                                 min={1}
                                 value={item.quantity}
                                 onChange={(e) => qtyModify(item, e.target.value)}
                             />
                             <XMarkIcon
-                                className="absolute right-0 self-center mr-2 
-                                size-5 text-gray-500 dark:text-white"
-                                onClick={() => deleteProduct(item.id)}
+                                className="self-center size-5 text-gray-500 hover:cursor-pointer dark:text-white"
+                                onClick={() => window.confirm('Are you sure you want to remove this item?') ? deleteProduct(item.id) : null}
                             />
                         </div>
                     </div>
