@@ -52,7 +52,7 @@ export default function Index({ auth, options, products }) {
                                             {product.sku}
                                         </td>
                                         <td className={classes}>
-                                            {product.name}
+                                            {product.name.slice(0, 45) + "..."}
                                         </td>
                                         <td className={classes}>
                                             {
@@ -68,10 +68,10 @@ export default function Index({ auth, options, products }) {
                                                 product.brand && (
                                                     <Link
                                                         key={product.brand.id}
-                                                        className="text-white"
-                                                        href={route('brands.show', product.brand.id)}
+                                                        className="format text-xs md:text-sm dark:text-white"
+                                                        href={route('brands.edit', product.brand.id)}
                                                     >
-                                                        <img className="rounded-full w-32" src={Constants.Storage + product.brand.logo} />
+                                                        {product.brand.name}
                                                     </Link>
                                                 )
                                             }

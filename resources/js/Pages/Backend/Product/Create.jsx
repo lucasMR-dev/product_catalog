@@ -1,21 +1,26 @@
 import InputError from "@/Components/InputError";
 import TextInput from "@/Components/TextInput";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Head, useForm } from "@inertiajs/react";
+import { Head, useForm, router } from "@inertiajs/react";
 import { useQuill } from 'react-quilljs';
 import { useEffect, useState, useRef } from "react";
 import Select from 'react-select';
 import CreatableSelect from 'react-select/creatable';
 import * as Constants from '@/Constants';
 import ButtonFormDiv from "@/Components/ButtonFormDiv";
+import { NumericFormat } from "react-number-format";
+import DragInput from "@/Components/DragInput";
 
 const inputCSS = Constants.inputCSS;
 const labelCSS = Constants.labelCSS;
 
-export default function Create({ auth, categoryList, brandList }) {
+export default function Create({ auth, categories, brands }) {
     const { quill, quillRef } = useQuill();
     const selectOptionsRef = useRef(null);
+    const categoriesRef = useRef(null);
+    const [currentBrand, setCurrentBrand] = useState({ label: 'Brands', value: 0 });
     const [disabled, setDisabled] = useState(true);
+    const [categoriesDisabled, setcategoriesDisabled] = useState(true);
     const [optionName, setOptionName] = useState([]);
     const [optionValues, setOptionValues] = useState([]);
     const [currentKey, setCurrentKey] = useState('');
@@ -32,28 +37,23 @@ export default function Create({ auth, categoryList, brandList }) {
         optionsAvailable: []
     });
 
+    const brandOptions = [];
+    const categoryOptions = [];
+
+    brands.data.map((brand) => {
+        brandOptions.push({ label: brand.name, value: brand.id });
+    });
+    categories.data.map((cat) => {
+        categoryOptions.push({ label: cat.name, value: cat.id });
+    });
+
     useEffect(() => {
         if (quill) {
             quill.on('text-change', () => {
                 setData('description', quill.root.innerHTML);
             });
-        }
-    }, [quill, data, currentKey]);
-
-    const brandOptions = [];
-    const categoryOptions = [];
-
-    brandList.map((brand) => {
-        brandOptions.push({ label: brand.name, value: brand.id });
-    })
-    categoryList.map((cat) => {
-        categoryOptions.push({ value: cat.id, label: cat.name });
-    });
-
-    const handleImages = (e) => {
-        let files = Array.from(e.target.files);
-        setData('images', files);
-    }
+        }       
+    }, [quill, data]);
 
     const createOption = (e) => {
         let option = { label: e, value: e };
@@ -95,10 +95,27 @@ export default function Create({ auth, categoryList, brandList }) {
     const handleChange = (field, e) => {
         const formated = [];
         const current = data.optionsAvailable;
-        e.map((option) => {
+        e.length > 0 ? e.map((option) => {
             formated.push(option.value);
-        });
-        if (field === 'categories') {
+        }) : e;
+        if (field === 'brand_id') {
+            router.visit('/admin/products/create', {
+                method: 'get',
+                data: { brand: e.value },
+                only: ['categories'],
+                preserveState: true,
+                preserveScroll: true,
+                onSuccess: (res) => {
+                    const brand = res.url.split('=');
+                    const selected = brandOptions.find(item => item.value == Number(brand[1]));
+                    setCurrentBrand([selected]);
+                    setcategoriesDisabled(false);
+                    categoriesRef.current.clearValue();
+                }
+            });
+            setData('brand_id', e.value);
+        }
+        else if (field === 'categories') {
             setData('categories', formated);
         }
         else {
@@ -129,8 +146,6 @@ export default function Create({ auth, categoryList, brandList }) {
         setData('slug', slug);
     }
 
-    console.log(data)
-
     return (
         <AuthenticatedLayout
             user={auth}
@@ -157,7 +172,18 @@ export default function Create({ auth, categoryList, brandList }) {
                         </div>
                         <div className="px-4">
                             <label htmlFor="price" className={labelCSS}>Price</label>
-                            <TextInput id="price" type="number" className={inputCSS} value={data.price} onChange={(e) => setData('price', e.target.value)} />
+                            <NumericFormat
+                                id="price"
+                                className={inputCSS}
+                                value={data.price}
+                                displayType={'input'}
+                                thousandSeparator={'.'}
+                                decimalSeparator={','}
+                                prefix={'$'}
+                                onValueChange={(values) => {
+                                    setData('price', Number(values.value));
+                                }}
+                            />
                             <InputError message={errors.price} />
                         </div>
                         <div>
@@ -179,19 +205,22 @@ export default function Create({ auth, categoryList, brandList }) {
                             <Select
                                 name="brand_id"
                                 id="brand_id"
+                                defaultValue={currentBrand}
                                 options={brandOptions}
                                 className="basic-multi-select bg-white relative"
                                 classNamePrefix="select"
                                 placeholder="Brands"
-                                onChange={(e) => setData('brand_id', e.value)}
+                                onChange={(e) => handleChange('brand_id', e)}
                             />
                         }
-                        <InputError message={errors.brand} />
+                        <InputError message={errors.brand_id} />
                     </div>
                     <div className="md:w-4/5 ml-3 mb-5">
                         <label htmlFor="categories" className={labelCSS}>Categories:</label>
                         {
                             <Select
+                                ref={categoriesRef}
+                                isDisabled={categoriesDisabled}
                                 isMulti
                                 name="categories"
                                 id="categories"
@@ -213,7 +242,12 @@ export default function Create({ auth, categoryList, brandList }) {
                     <InputError message={errors.description} />
                 </div>
                 <br />
-                <div className="flex mt-4 mb-5 group">
+                <div>
+                    <label htmlFor="images" className={labelCSS}>Images</label>
+                    <DragInput updateFiles={setData} />
+                    <InputError message={errors.images} />
+                </div>
+                <div className="flex mt-4 mb-5 items-baseline group">
                     <div className="md:w-1/2">
                         <label htmlFor="option" className={labelCSS}>Options Available:</label>
                         <CreatableSelect
@@ -227,7 +261,8 @@ export default function Create({ auth, categoryList, brandList }) {
                             onCreateOption={(e) => createOption(e)}
                             onChange={selectOption}
                         />
-
+                    </div>
+                    <div className="md:w-1/2 self-end">
                         <CreatableSelect
                             ref={selectOptionsRef}
                             isDisabled={disabled}
@@ -240,20 +275,8 @@ export default function Create({ auth, categoryList, brandList }) {
                             placeholder="Options Available"
                             onChange={(e) => handleChange('options', e)}
                         />
-                        <InputError message={errors.optionsAvailable} />
                     </div>
-                    <div className="md:w-1/2 px-4">
-                        <label htmlFor="images" className={labelCSS}>Images</label>
-                        <input className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer 
-                            bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 
-                            dark:border-gray-600 dark:placeholder-gray-400"
-                            aria-describedby="images_help" id="images" type="file" accept="image/*"
-                            onChange={(e) => handleImages(e)}
-                            multiple
-                        />
-                        <span className="mt-1 text-sm text-gray-500 dark:text-gray-300" id="images_help">PNG, JPG or GIF (Max. Size 7MB).</span>
-                        <InputError message={errors.images} />
-                    </div>
+                    <InputError message={errors.optionsAvailable} />
                 </div>
                 <ButtonFormDiv href="products.index" display="Create" />
             </form>

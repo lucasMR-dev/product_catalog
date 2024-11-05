@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
+use App\Http\Resources\BrandResource;
+use App\Http\Resources\CategoryResource;
 use App\Http\Resources\ProductResource;
 use App\Models\Brand;
 use App\Models\Category;
@@ -34,12 +36,21 @@ class ProductController extends Controller
      */
     public function create()
     {
-        $categoryList = Category::all();
-        $brandList = Brand::all();
+        $categories = Category::query();
+        $brands = Brand::query();
+
+        // Brand Filter
+        if (request("brand")) {
+            $brand = Brand::where('id', '=', request("brand"))->first();
+            $id = [$brand->id];
+            $categories->whereHas("brands", function ($query) use ($id) {
+                $query->whereIn('id', $id);
+            })->get();
+        }
 
         return inertia('Backend/Product/Create', [
-            'categoryList' => $categoryList,
-            'brandList' => $brandList,
+            'categories' => CategoryResource::collection($categories->paginate()),
+            'brands' => BrandResource::collection($brands->paginate()),
         ]);
     }
 
@@ -58,12 +69,15 @@ class ProductController extends Controller
                 $image = $file->store('products/' . $attach . '/images', 'public');
                 $i++;
                 array_push($images, [
+                    'name' => $file->getClientOriginalName(),
                     'image_path' => $image,
                     'display_pos' => $i
                 ]);
             }
         }
-        $validatedForm['optionsAvailable'] = json_encode($validatedForm['optionsAvailable']);
+        if (isset($validatedForm['optionsAvailable'])) {
+            $validatedForm['optionsAvailable'] = json_encode($validatedForm['optionsAvailable']);
+        }
         $validatedForm['images'] = json_encode($images);
         $validatedForm['created_by'] = Auth::id();
         $validatedForm['updated_by'] = Auth::id();
@@ -97,13 +111,24 @@ class ProductController extends Controller
      */
     public function edit(Product $product)
     {
-        $categoryList = Category::all();
-        $brandList = Brand::all();
+        $categories = Category::query();
+        $brands = Brand::query();
+
+        // Brand Filter
+        if (request("brand")) {
+            $brand = Brand::where('id', '=', request("brand"))->first();
+            $id = [$brand->id];
+        } else {
+            $id = [$product->brand->id];
+        }
+        $categories->whereHas("brands", function ($query) use ($id) {
+            $query->whereIn('id', $id);
+        })->get();
 
         return inertia('Backend/Product/Edit', [
             'product' => new ProductResource($product),
-            'categoryList' => $categoryList,
-            'brandList' => $brandList,
+            'categories' => CategoryResource::collection($categories->paginate()),
+            'brands' => BrandResource::collection($brands->paginate())
         ]);
     }
 
