@@ -1,18 +1,25 @@
 import { XMarkIcon } from "@heroicons/react/24/outline";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, memo } from "react";
 import * as Constants from '@/Constants';
 
-export default function DragInput({ productImages, updateFiles }) {
-    const [images, setImages] = useState(productImages ? JSON.parse(productImages) : []);
-    const [files, setFiles] = useState([]);
+const DragInput = memo(({ productImages, updateFiles }) => {
+    const currentImages = productImages ? JSON.parse(productImages) : null;
+    const [images, setImages] = useState(currentImages || []);
+    const [uploads, setUploads] = useState([]);
     const [dragging, setDragging] = useState(false);
     const dropzoneRef = useRef(null);
-
     useEffect(() => {
-        if (files.length > 0) {
-            updateFiles('images', files);
+        if (uploads.length > 0 && JSON.stringify(images) !== JSON.stringify(currentImages)) {
+            let filtered = images.filter((image) => !image.url);
+            updateFiles('images', [JSON.stringify(filtered), uploads]);
         }
-    }, [files])
+        else if (uploads.length < 1) {
+            updateFiles('images', images);
+        }
+        else {
+            updateFiles('images', uploads);
+        }
+    }, [images, uploads])
 
     const selectFiles = () => {
         dropzoneRef.current.click();
@@ -20,7 +27,6 @@ export default function DragInput({ productImages, updateFiles }) {
 
     const onFilesSelected = (e) => {
         const files = e.target.files;
-        console.log(files)
         if (files.length == 0) return;
         for (let i = 0; i < files.length; i++) {
             if (files[i].type.split('/')[0] !== 'image') continue;
@@ -30,9 +36,10 @@ export default function DragInput({ productImages, updateFiles }) {
                     {
                         name: files[i].name,
                         url: URL.createObjectURL(files[i]),
+                        display_pos: i
                     }
                 ]);
-                setFiles((prevFiles) => [
+                setUploads((prevFiles) => [
                     ...prevFiles,
                     files[i]
                 ]);
@@ -42,7 +49,7 @@ export default function DragInput({ productImages, updateFiles }) {
 
     const deletePreview = (index) => {
         setImages((prevImages) => prevImages.filter((_, i) => i !== index));
-        setFiles((prevFiles) => prevFiles.filter((_, i) => i !== index));
+        setUploads((prevFiles) => prevFiles.filter((_, i) => i !== index));
     }
 
     const onDragOver = (e) => {
@@ -68,7 +75,7 @@ export default function DragInput({ productImages, updateFiles }) {
                         url: URL.createObjectURL(files[i]),
                     }
                 ]);
-                setFiles((prevFiles) => [
+                setUploads((prevFiles) => [
                     ...prevFiles,
                     files[i]
                 ]);
@@ -112,4 +119,5 @@ export default function DragInput({ productImages, updateFiles }) {
             </div>
         </div>
     )
-}
+});
+export default DragInput;
