@@ -94,7 +94,7 @@ export default function Create({ auth, categories, brands }) {
 
     const handleChange = (field, e) => {
         const formated = [];
-        const current = data.optionsAvailable;
+        const current = data?.optionsAvailable;
         e.length > 0 ? e.map((option) => {
             formated.push(option.value);
         }) : e;
@@ -151,7 +151,7 @@ export default function Create({ auth, categories, brands }) {
             user={auth}
             header={<h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">Product</h2>}
         >
-            <Head title={"Product " + data.name} />
+            <Head title={"Product"} />
 
             <form className="w-4/5 mt-5 mx-auto" onSubmit={onSubmit}>
                 <div className="relative z-0 w-full mb-5 group">

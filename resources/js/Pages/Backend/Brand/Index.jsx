@@ -71,7 +71,7 @@ export default function Index({ auth, brands, options }) {
                                             </ul>
                                         </td>
                                         <td>
-                                            <ActionsDiv href={{ show: "brands.show", edit: "brands.edit" }} resource={brand} type="brand" />
+                                            <ActionsDiv resource={brand} type="brands" />
                                         </td>
                                     </tr>
                                 );

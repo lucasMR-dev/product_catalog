@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, memo } from "react";
 import ApplicationLogo from '@/Components/ApplicationLogo';
 import Dropdown from '@/Components/Dropdown';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
@@ -8,7 +8,7 @@ import Footer from '@/Components/Footer';
 import { MoonIcon } from "@heroicons/react/24/outline";
 import * as Constants from '@/Constants';
 
-export default function AuthenticatedLayout({ header, children }) {
+const AuthenticatedLayout = memo(({ header, children }) => {
     const user = usePage().props.auth.user;
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
     const [darkMode, setDarkMode] = useState((localStorage.theme) === 'dark' ? true : false);
@@ -62,7 +62,7 @@ export default function AuthenticatedLayout({ header, children }) {
                                         <Dropdown>
                                             <Dropdown.Trigger>
                                                 <span className="inline-flex rounded-md">
-                                                    <img className="rounded-full cursor-pointer object-cover h-14 w-14 mt-1"
+                                                    <img className="rounded-full cursor-pointer object-cover h-14 w-14 mt-2"
                                                         src={Constants.Storage + user.image_profile}
                                                     />
                                                 </span>
@@ -162,4 +162,5 @@ export default function AuthenticatedLayout({ header, children }) {
             <Footer />
         </div >
     );
-}
+});
+export default AuthenticatedLayout;

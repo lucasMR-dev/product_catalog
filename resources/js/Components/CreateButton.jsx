@@ -1,6 +1,7 @@
 import { Link } from "@inertiajs/react";
+import { memo } from "react";
 
-export default function CreateButton({ href }) {
+const CreateButton = memo(({ href }) => {
     return (
         <Link
             href={href}
@@ -14,4 +15,5 @@ export default function CreateButton({ href }) {
             </button>
         </Link>
     )
-}
+});
+export default CreateButton;

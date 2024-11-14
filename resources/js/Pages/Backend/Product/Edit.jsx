@@ -3,7 +3,7 @@ import TextInput from "@/Components/TextInput";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, useForm, router } from "@inertiajs/react";
 import { useQuill } from 'react-quilljs';
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useCallback, memo } from "react";
 import Select from 'react-select';
 import CreatableSelect from 'react-select/creatable';
 import * as Constants from '@/Constants';
@@ -23,6 +23,7 @@ export default function Edit({ auth, product, categories, brands }) {
         });
     }
     const { quill, quillRef } = useQuill();
+    const optionsNameRef = useRef(null);
     const selectOptionsRef = useRef(null);
     const categoriesRef = useRef(null);
     const [currentBrand, setCurrentBrand] = useState({ label: product.brand.name, value: product.brand.id } || []);
@@ -54,7 +55,7 @@ export default function Edit({ auth, product, categories, brands }) {
         name: product.name || '',
         slug: product.slug || '',
         description: product.description || '',
-        images: [],
+        images: null,
         brand_id: product.brand.id || '',
         categories: initial || [],
         price: product.price,
@@ -79,7 +80,7 @@ export default function Edit({ auth, product, categories, brands }) {
             setOptionName([...optionName, option]);
         }
         setCurrentKey(e);
-    }
+    };
 
     const selectOption = (value, actionMeta) => {
         // On selected option Change
@@ -111,7 +112,7 @@ export default function Edit({ auth, product, categories, brands }) {
 
     const handleChange = (field, e) => {
         const formated = [];
-        const current = data.optionsAvailable;
+        const current = data?.optionsAvailable;
         e.length > 0 ? e.map((option) => {
             formated.push(option.value);
         }) : e;
@@ -282,6 +283,7 @@ export default function Edit({ auth, product, categories, brands }) {
                         <label htmlFor="option" className={labelCSS}>Options Available:</label>
                         <CreatableSelect
                             isClearable
+                            ref={optionsNameRef}
                             name="option"
                             id="option"
                             options={optionName}

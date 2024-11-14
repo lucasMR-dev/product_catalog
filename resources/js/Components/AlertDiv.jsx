@@ -1,15 +1,19 @@
 import { InformationCircleIcon } from "@heroicons/react/24/outline";
 import CreateButton from "./CreateButton";
+import { memo } from "react";
 
-export default function AlertDiv({ options, path }) {
-
-    let divStyle = "grid items-center md:justify-items-end p-4 mb-4 text-green-500 dark:text-green-400";
-    if (options !== null) {
-        if (options.action === 'delete') {
+const AlertDiv = memo(({ options, path }) => {
+    let divStyle;
+    switch (options?.action) {
+        case 'delete':
             divStyle = "grid items-center md:justify-items-end p-4 mb-4 text-red-500 dark:text-red-400 ";
-        } else if (options.action === 'update') {
+            break;
+        case 'update':
             divStyle = "grid items-center md:justify-items-end p-4 mb-4 text-blue-500 dark:text-blue-400";
-        }
+            break;
+        default:
+            divStyle = "grid items-center md:justify-items-end p-4 mb-4 text-green-500 dark:text-green-400";
+            break;
     }
 
     return (
@@ -34,4 +38,5 @@ export default function AlertDiv({ options, path }) {
             </div>
         </div>
     )
-}
+});
+export default AlertDiv;

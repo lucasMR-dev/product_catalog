@@ -62,7 +62,7 @@ export default function Index({ auth, categories, options }) {
                                             {category.updatedBy.name}
                                         </td>
                                         <td>
-                                            <ActionsDiv href={{ show: 'categories.show', edit: 'categories.edit' }} resource={category} type="category" />
+                                            <ActionsDiv resource={category} type="categories" />
                                         </td>
                                     </tr>
                                 );

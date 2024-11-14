@@ -1,9 +1,9 @@
-import React from "react";
+import { memo } from "react";
 import { Link } from "@inertiajs/react";
 
-export default function Pagination({ links }) {
+const Pagination = memo(({ links }) => {
     return (
-        <nav className="text-center">
+        links.length > 3 ? (<nav className="text-center">
             <div className="border-blue-gray-100 bg-blue-gray-50 p-2 dark:text-white">
                 {links.map((link) => (
                     <Link
@@ -20,6 +20,7 @@ export default function Pagination({ links }) {
                     </Link>
                 ))}
             </div>
-        </nav>
+        </nav>) : null
     );
-}
+});
+export default Pagination;

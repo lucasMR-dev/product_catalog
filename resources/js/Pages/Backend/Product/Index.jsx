@@ -48,7 +48,7 @@ export default function Index({ auth, options, products }) {
                                 const productOptions = JSON.parse(product.optionsAvailable);
                                 return (
                                     <tr key={product.sku}>
-                                        <td className={classes}>
+                                        <td className={classes + " text-gray-700"}>
                                             {product.sku}
                                         </td>
                                         <td className={classes}>
@@ -58,7 +58,10 @@ export default function Index({ auth, options, products }) {
                                             {
                                                 images.slice(0, 1).map((img) => {
                                                     return (
-                                                        <img key={img.image_path} className="md:w-24 md:h-24" src={Constants.Storage + img.image_path} />
+                                                        <img key={img.image_path}
+                                                            className="md:w-24 md:h-24"
+                                                            src={Constants.Storage + img.image_path}
+                                                        />
                                                     )
                                                 })
                                             }
@@ -66,13 +69,9 @@ export default function Index({ auth, options, products }) {
                                         <td className={classes}>
                                             {
                                                 product.brand && (
-                                                    <Link
-                                                        key={product.brand.id}
-                                                        className="format text-xs md:text-sm dark:text-white"
-                                                        href={route('brands.edit', product.brand.id)}
-                                                    >
+                                                    <span className="format text-xs md:text-sm dark:text-white">
                                                         {product.brand.name}
-                                                    </Link>
+                                                    </span>
                                                 )
                                             }
                                         </td>
@@ -85,22 +84,22 @@ export default function Index({ auth, options, products }) {
                                                 prefix={'$'}
                                             />
                                         </td>
-                                        <td className={classes}>
+                                        <td
+                                            className={
+                                                product?.stock <= 5 ? classes + " text-red-500"
+                                                    : product?.stock > 5 && product?.stock <= 10 ? classes + " text-amber-500"
+                                                        : classes + " text-green-500"}>
                                             {product.stock}
                                         </td>
                                         <td className={classes}>
                                             <ul className="list-none">
                                                 {product.categories.map((cat) => {
                                                     return (
-                                                        <Link
+                                                        <li
                                                             key={cat.id}
-                                                            className="format text-xs md:text-sm dark:text-white"
-                                                            href={route('categories.show', cat.id)}
-                                                        >
-                                                            <li key={cat.id}>
-                                                                {cat.name}
-                                                            </li>
-                                                        </Link>
+                                                            className="format text-xs md:text-sm dark:text-white">
+                                                            {cat.name}
+                                                        </li>
                                                     )
                                                 })}
                                             </ul>
@@ -126,7 +125,7 @@ export default function Index({ auth, options, products }) {
                                             </ul>
                                         </td>
                                         <td>
-                                            <ActionsDiv href={{ show: "products.show", edit: "products.edit" }} resource={product} type="product" />
+                                            <ActionsDiv resource={product} type="products" />
                                         </td>
                                     </tr>
                                 );

@@ -1,10 +1,10 @@
 import { Transition } from '@headlessui/react';
 import { Link } from '@inertiajs/react';
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useState, memo } from 'react';
 
 const DropDownContext = createContext();
 
-const Dropdown = ({ children }) => {
+const Dropdown = memo(({ children }) => {
     const [open, setOpen] = useState(false);
 
     const toggleOpen = () => {
@@ -16,9 +16,9 @@ const Dropdown = ({ children }) => {
             <div className="relative">{children}</div>
         </DropDownContext.Provider>
     );
-};
+});
 
-const Trigger = ({ children }) => {
+const Trigger = memo(({ children }) => {
     const { open, setOpen, toggleOpen } = useContext(DropDownContext);
 
     return (
@@ -33,9 +33,9 @@ const Trigger = ({ children }) => {
             )}
         </>
     );
-};
+});
 
-const Content = ({
+const Content = memo(({
     align = 'right',
     width = '48',
     contentClasses = 'py-1 bg-white dark:bg-gray-700',
@@ -84,9 +84,9 @@ const Content = ({
             </Transition>
         </>
     );
-};
+});
 
-const DropdownLink = ({ className = '', children, ...props }) => {
+const DropdownLink = memo(({ className = '', children, ...props }) => {
     return (
         <Link
             {...props}
@@ -98,7 +98,7 @@ const DropdownLink = ({ className = '', children, ...props }) => {
             {children}
         </Link>
     );
-};
+});
 
 Dropdown.Trigger = Trigger;
 Dropdown.Content = Content;
