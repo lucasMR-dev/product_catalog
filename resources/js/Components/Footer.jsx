@@ -1,4 +1,5 @@
-export default function Footer() {
+import { memo } from "react";
+const Footer = memo(() => {
     const site = import.meta.env.VITE_APP_NAME;
     const currentYear = new Date().getFullYear();
 
@@ -30,4 +31,5 @@ export default function Footer() {
             </ul>
         </footer>
     )
-}
+});
+export default Footer;

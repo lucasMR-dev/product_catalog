@@ -7,7 +7,6 @@ import * as Constants from '@/Constants';
 
 export default function Show({ auth, product }) {
     const images = JSON.parse(product.images);
-    const description = { __html: product.description };
     return (
         <AuthenticatedLayout
             user={auth}
@@ -19,7 +18,7 @@ export default function Show({ auth, product }) {
                 <div className="px-5 pb-5">
                     <h5 className="mt-5 text-xl font-semibold tracking-tight text-gray-900 dark:text-white">{product.name}</h5>
                     <div className="flex items-center mt-2.5 mb-5">
-                        <div className="dark:text-white" dangerouslySetInnerHTML={description} />
+                        <div className="dark:text-white" dangerouslySetInnerHTML={{__html: product.description}} />
                     </div>
                     <hr className="m-2" />
                     <div className="grid grid-cols-2 md:flex md:items-center md:justify-between">
@@ -44,7 +43,7 @@ export default function Show({ auth, product }) {
                             <Link
                                 key={product.brand.id}
                                 className="dark:text-white"
-                                href={route('brands.show', product.brand.id)}
+                                href={route('brands.edit', product.brand.id)}
                             >
                                 <img className="rounded-full w-12 md:w-24" src={Constants.Storage + product.brand.logo} />
                             </Link>
@@ -56,7 +55,7 @@ export default function Show({ auth, product }) {
                                     <Link
                                         key={cat.id}
                                         className="format text-xs md:text-sm dark:text-white"
-                                        href={route('categories.show', cat.id)}
+                                        href={route('categories.edit', cat.id)}
                                     >
                                         <li key={cat.id} className="p-2">
                                             {cat.name}
